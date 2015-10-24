@@ -1,12 +1,10 @@
-package util_test
+package util
 
 import (
 	"os"
 	"testing"
   "flag"
   . "github.com/smartystreets/goconvey/convey"
-
-  "gitlab.kohn.io/ankoh/vmlcm/util"
 )
 
 func TestArguments(t *testing.T) {
@@ -19,13 +17,13 @@ func TestArguments(t *testing.T) {
           "vmlcm",
           "-f", "./agents.json",
           "verify"}
-        args, err := util.ParseArguments()
+        args, err := ParseArguments()
 
         So(err, ShouldEqual, nil)
         So(args, ShouldNotEqual, nil)
         So(args.ConfigPath, ShouldNotBeNil)
         So(*args.ConfigPath, ShouldEqual, "./agents.json")
-        So(args.Command, ShouldEqual, util.LCMVerify)
+        So(args.Command, ShouldEqual, VerifyCommand)
       })
 		})
 
@@ -35,13 +33,13 @@ func TestArguments(t *testing.T) {
           "vmlcm",
           "-f=./agents.json",
           "up", "3"}
-        args, err := util.ParseArguments()
+        args, err := ParseArguments()
 
         So(err, ShouldEqual, nil)
         So(args, ShouldNotEqual, nil)
         So(args.ConfigPath, ShouldNotBeNil)
         So(*args.ConfigPath, ShouldEqual, "./agents.json")
-        So(args.Command, ShouldEqual, util.LCMUp)
+        So(args.Command, ShouldEqual, UpCommand)
         So(args.CommandParameter, ShouldEqual, 3)
       })
 		})
