@@ -1,4 +1,7 @@
 before_script:
+  - mkdir -p /usr/src/vmlcm
+  - cp . /usr/src/vmlcm
+  - cd /usr/src/vmlcm
   - go get -d -v ./...
   - go install -v
 
