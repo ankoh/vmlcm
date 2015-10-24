@@ -8,7 +8,7 @@ import (
 )
 
 func TestArguments(t *testing.T) {
-	Convey("Given a clean command line FlagSet", t, func() {
+	Convey("Given a clean command line environment", t, func() {
     flag.CommandLine = flag.NewFlagSet("vmlcm", flag.ContinueOnError)
 
 		Convey("When the flag value is separated with whitespace", func() {
