@@ -1,0 +1,5 @@
+{
+  "vmrun": "/Applications/VMware Fusion.app/Contents/Library/vmrun",
+  "templatePath": "/tmp/samplevms/sample1.vmx",
+  "clonesPath": "/tmp/vmclones"
+}
