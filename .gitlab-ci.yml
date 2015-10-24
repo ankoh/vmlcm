@@ -9,7 +9,7 @@ before_script:
 tests:
   type: test
   script:
-    - go test -cover ./...
+    - go test -v -cover ./...
   tags:
     - golang
     - plain
