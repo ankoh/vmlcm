@@ -11,43 +11,43 @@ import (
 type LCMCommand int
 
 const (
-	// Verify checks the configuration of the LCM
+	// LCMVerify checks the configuration of the LCM
 	// The option shall be used to evaluate a working setup
 	// * Checks whether the configuration file is valid
 	// * Checks whether the template exists
 	// * Checks whether the clones directory exists
-	Verify LCMCommand = iota
+	LCMVerify LCMCommand = iota
 
-	// Status returns the current state of the LCM
+	// LCMStatus returns the current state of the LCM
 	// * Gathers information about running clones
 	// * Gathers information about stopped/suspended clones
 	// * Gathers information about the used template
-	Status
+	LCMStatus
 
-	// Up <number> ensures that the specified amount of clones is up
+	// LCMUp <number> ensures that the specified amount of clones is up
 	// * up 10 creates 10 if no clones are existing
 	// * up 10 creates 6 clones if 4 clones are existing
 	// * up 0 deletes all clones
-	Up
+	LCMUp
 
-	// Reset resets all clones
+	// LCMReset resets all clones
 	// This is probably faster than up 0 -> up 10
-	Reset
+	LCMReset
 
-	// Start starts all currently existing clones
+	// LCMStart starts all currently existing clones
 	// This option shall be used when build agents are manually shutdown/suspended
 	// or stopped with Stop
-	Start
+	LCMStart
 
-	// Stop stops all currently existing clones
+	// LCMStop stops all currently existing clones
 	// This option shall be used when build agents need to be stopped
 	// in maintenance windows for example
-	Stop
+	LCMStop
 
-	// Suspend suspends all currently existing clones
+	// LCMSuspend suspends all currently existing clones
 	// Similar to stop this option stops all clones in maintenance windows while
 	// maintaining the vm state
-	Suspend
+	LCMSuspend
 )
 
 // LCMArguments stores the options that have been passed to vmlcm
@@ -82,19 +82,19 @@ func ParseArguments() (*LCMArguments, error) {
 
 	switch commandString {
 	case "verify":
-		command = Verify
+		command = LCMVerify
 	case "status":
-		command = Status
+		command = LCMStatus
 	case "up":
-		command = Up
+		command = LCMUp
 	case "reset":
-		command = Reset
+		command = LCMReset
 	case "start":
-		command = Start
+		command = LCMStart
 	case "stop":
-		command = Stop
+		command = LCMStop
 	case "suspend":
-		command = Suspend
+		command = LCMSuspend
 	default:
 		err := fmt.Errorf("Unknown command %s", commandString)
 		return nil, err
@@ -103,8 +103,8 @@ func ParseArguments() (*LCMArguments, error) {
 	var commandParameter int
 
 	// If needed, check if command parameter has been provided
-	if command == Up && len(arguments) == 1 {
-		if len(arguments) == 1 {
+	if command == LCMUp {
+		if len(arguments) <= 1 {
 			err := fmt.Errorf("The command up requires a number parameter. (vmlcm -f ./agents.yml up 3)")
       return nil, err
 		}
