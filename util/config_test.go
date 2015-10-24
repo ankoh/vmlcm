@@ -24,7 +24,7 @@ func TestConfig(t *testing.T) {
       So(len(config2.Addresses), ShouldEqual, 0)
     })
 
-    Convey("invalid test filed must return an error", func() {
+    Convey("invalid test files must result in an error", func() {
       config1, err1 := util.ParseConfiguration("../samples/config/invalid1.json")
       So(err1, ShouldNotBeNil)
       So(config1, ShouldBeNil)
@@ -37,6 +37,12 @@ func TestConfig(t *testing.T) {
       config4, err4 := util.ParseConfiguration("../samples/config/invalid4.json")
       So(err4, ShouldNotBeNil)
       So(config4, ShouldBeNil)
+    })
+
+    Convey("not existing file must result in an error", func() {
+      config, err := util.ParseConfiguration("/path/not/exsting/hopefully")
+      So(err, ShouldNotBeNil)
+      So(config, ShouldBeNil)
     })
   })
 }

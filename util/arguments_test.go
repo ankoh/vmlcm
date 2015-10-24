@@ -13,15 +13,15 @@ func TestArguments(t *testing.T) {
     flag.CommandLine = flag.NewFlagSet("vmlcm", flag.ContinueOnError)
 
 		Convey("When the flag value is separated with whitespace", func() {
-      Convey("ParseArguments should return correct values", func() {
-        os.Args = []string{
-          "vmlcm",
-          "-f", "./agents.json",
-          "verify"}
-        args, err := util.ParseArguments()
+      os.Args = []string{
+        "vmlcm",
+        "-f", "./agents.json",
+        "verify"}
 
-        So(err, ShouldEqual, nil)
-        So(args, ShouldNotEqual, nil)
+      Convey("ParseArguments must return correct values", func() {
+        args, err := util.ParseArguments()
+        So(err, ShouldBeNil)
+        So(args, ShouldNotBeNil)
         So(args.ConfigPath, ShouldNotBeNil)
         So(*args.ConfigPath, ShouldEqual, "./agents.json")
         So(args.Command, ShouldEqual, util.VerifyCommand)
@@ -29,20 +29,31 @@ func TestArguments(t *testing.T) {
 		})
 
     Convey("When the flag value is separated with an equal sign", func() {
-      Convey("ParseArguments should return correct values", func() {
-        os.Args = []string{
-          "vmlcm",
-          "-f=./agents.json",
-          "up", "3"}
+      os.Args = []string{
+        "vmlcm",
+        "-f=./agents.json",
+        "up", "3"}
+
+      Convey("ParseArguments must return correct values", func() {
         args, err := util.ParseArguments()
 
-        So(err, ShouldEqual, nil)
-        So(args, ShouldNotEqual, nil)
+        So(err, ShouldBeNil)
+        So(args, ShouldNotBeNil)
         So(args.ConfigPath, ShouldNotBeNil)
         So(*args.ConfigPath, ShouldEqual, "./agents.json")
         So(args.Command, ShouldEqual, util.UpCommand)
         So(args.CommandParameter, ShouldEqual, 3)
       })
 		})
+
+    Convey("When no arguments are available", func() {
+      os.Args = []string{ "vmlcm" }
+
+      Convey("ParseArguments must return an error", func() {
+        args, err := util.ParseArguments()
+        So(err, ShouldNotBeNil)
+        So(args, ShouldBeNil)
+      })
+    })
 	})
 }
