@@ -1,0 +1,11 @@
+before_script:
+  - go get -d -v ./...
+  - go install -v
+
+tests:
+  type: test
+  script:
+    - go test
+  tags:
+    - golang
+    - plain

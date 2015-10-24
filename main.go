@@ -2,7 +2,7 @@ package main
 
 import fmt "fmt"
 import os "os"
-import config "gitlab.kohn.io/ankoh/vmlcm/util"
+// import config "gitlab.kohn.io/ankoh/vmlcm/util"
 
 func main() {
 	arguments := os.Args[1:]
