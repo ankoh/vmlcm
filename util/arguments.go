@@ -61,8 +61,8 @@ type LCMArguments struct {
 func ParseArguments() (*LCMArguments, error) {
 	// Parse flags
 	configPath := flag.String("f", "", "path to the configuration file")
-	arguments := flag.Args()
 	flag.Parse()
+  arguments := flag.Args()
 
 	// Check if the flag has been provided
 	if len(*configPath) == 0 {
