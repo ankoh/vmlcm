@@ -3,7 +3,7 @@ before_script:
   - cp -r ./* /workspace/src/vmlcm
   - cd /workspace/src/vmlcm
   - export GOPATH=/workspace
-  - go get -d -v ./...
+  - go get -v ./...
   - go install -v
 
 tests:
