@@ -12,7 +12,7 @@ func TestExecute(t *testing.T) {
 
     Convey("executeCommand must be able to execute 'ls -la ./'", func() {
       outChan := make(chan string)
-      errChan := make(chan string)
+      errChan := make(chan error)
       defer close(outChan)
       defer close(errChan)
 
@@ -26,5 +26,22 @@ func TestExecute(t *testing.T) {
 				So(err, ShouldBeNil)
       }
     })
+
+		Convey("executeCommand must throw an error when executing 'notexistingcommand -foo -bar 42'", func() {
+			outChan := make(chan string)
+			errChan := make(chan error)
+			defer close(outChan)
+			defer close(errChan)
+
+			go vmware.ExecuteCommand(outChan, errChan, "notexistingcommand", "-foo", "-bar", "42")
+
+			// Chooses either out or err
+			select {
+				case out := <- outChan:
+				So(out, ShouldBeNil)
+				case err := <- errChan:
+				So(err, ShouldNotBeNil)
+			}
+		})
   })
 }

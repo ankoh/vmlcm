@@ -10,7 +10,7 @@ import(
 // That will enable nice dot-progress indicators in the command line
 func ExecuteCommand(
   outputChannel chan string,
-  errorChannel chan string,
+  errorChannel chan error,
   binary string,
   arguments ...string) {
 
@@ -19,7 +19,7 @@ func ExecuteCommand(
 
   // Pipe to respective channels
   if err != nil {
-    errorChannel <- fmt.Sprintf("%s", err.Error())
+    errorChannel <- err
   } else {
     outputChannel <- fmt.Sprintf("%s", out)
   }
