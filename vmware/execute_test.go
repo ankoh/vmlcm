@@ -16,9 +16,9 @@ func TestExecute(t *testing.T) {
       defer close(outChan)
       defer close(errChan)
 
-      // Dont call as goroutine as goconvey does not support it
       go vmware.ExecuteCommand(outChan, errChan, "ls", "-la", "./")
 
+			// Select different channels
       select {
         case out := <- outChan:
         So(out, ShouldNotBeNil)
