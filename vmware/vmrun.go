@@ -51,6 +51,7 @@ func (vmrun *CLIVmrun) List() {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "list")
 }
 
@@ -63,6 +64,7 @@ func (vmrun *CLIVmrun) Start(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "start", vmx, "nogui")
 }
 
@@ -82,6 +84,7 @@ func (vmrun *CLIVmrun) Stop(vmx string, hard bool) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "stop", vmx, force)
 }
 
@@ -101,6 +104,7 @@ func (vmrun *CLIVmrun) Reset(vmx string, hard bool) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "reset", vmx, force)
 }
 
@@ -120,6 +124,7 @@ func (vmrun *CLIVmrun) Suspend(vmx string, hard bool) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "suspend", vmx, force)
 }
 
@@ -132,6 +137,7 @@ func (vmrun *CLIVmrun) Pause(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "pause", vmx)
 }
 
@@ -144,6 +150,7 @@ func (vmrun *CLIVmrun) Unpause(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "unpause", vmx)
 }
 
@@ -156,6 +163,7 @@ func (vmrun *CLIVmrun) ListSnapshots(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "listSnapshots", vmx)
 }
 
@@ -168,6 +176,7 @@ func (vmrun *CLIVmrun) Snapshot(vmx string, name string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "snapshot", vmx, name)
 }
 
@@ -180,6 +189,7 @@ func (vmrun *CLIVmrun) DeleteSnapshot(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "deleteSnapshot", vmx)
 }
 
@@ -192,6 +202,7 @@ func (vmrun *CLIVmrun) RevertToSnapshot(vmx string, name string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "revertToSnapshot", vmx, name)
 }
 
@@ -204,6 +215,7 @@ func (vmrun *CLIVmrun) Delete(vmx string) {
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "deleteVM", vmx)
 }
 
@@ -216,6 +228,7 @@ func (vmrun *CLIVmrun) CloneLinked(template string, destination string, snapshot
     vmrun.outputChannel,
     vmrun.errorChannel,
     vmrun.vmrunPath,
+    "-T", "fusion",
     "clone", template, destination,
     "linked",
     fmt.Sprintf("-snapshot=%s", snapshot),
