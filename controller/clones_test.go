@@ -8,6 +8,7 @@ import (
 func TestClones(t *testing.T) {
   Convey("Given a folder of sample configurations", t, func(context C) {
     // $REPO/samples/config
+    
     Convey("listDirectory must return all files", func() {
       files, err := listDirectory("../samples/config")
 
