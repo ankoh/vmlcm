@@ -10,7 +10,7 @@ type VmrunWrapper interface {
 	Close()
 
   Help()
-	List(vmx string)
+	List()
 	Start(vmx string)
 	Stop(vmx string, hard bool)
 	Reset(vmx string, hard bool)

@@ -4,14 +4,11 @@ import (
 	"fmt"
 )
 
-// Log padding
-var verificationFormat = "%-50s %s"
-
 // LogVerification prints a validation message
 func LogVerification(message string, successful bool) {
 	var status = "[Failed]"
 	if successful {
 		status = "[Ok]"
 	}
-	fmt.Println(verificationFormat, message, status)
+	fmt.Printf("\t%-50s %s\n", message, status)
 }

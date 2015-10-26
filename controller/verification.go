@@ -17,10 +17,8 @@ func Verify(
   // First check the paths
   err := verifyConfigurationPaths(config)
   if err != nil {
-    util.LogVerification("Verifying configuration paths", false)
     return err
   }
-  util.LogVerification("Verifying configuration paths", true)
 
   // Test vmrun help
   err = testVmrunHelp(vmrun)
