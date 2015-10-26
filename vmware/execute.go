@@ -20,6 +20,7 @@ func ExecuteCommand(
   // Pipe to respective channels
   if err != nil {
     errorChannel <- fmt.Sprintf("%s", err.Error())
+  } else {
+    outputChannel <- fmt.Sprintf("%s", out)
   }
-  outputChannel <- fmt.Sprintf("%s", out)
 }

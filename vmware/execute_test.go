@@ -18,7 +18,7 @@ func TestExecute(t *testing.T) {
 
       go vmware.ExecuteCommand(outChan, errChan, "ls", "-la", "./")
 
-			// Select different channels
+			// Chooses either out or err
       select {
         case out := <- outChan:
         So(out, ShouldNotBeNil)
