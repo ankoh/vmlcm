@@ -52,6 +52,8 @@ func TestVerification(t *testing.T) {
 	})
 
   Convey("Verify must successfully verify various configurations", t, func() {
+    logger := util.NewLogger()
+
     createTestFolders()
     createTestTemplate()
     createTestVmrun()
@@ -66,7 +68,7 @@ func TestVerification(t *testing.T) {
     // Success
     fmt.Println()
     fmt.Println()
-    err := Verify(vmrun, config)
+    err := Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldBeNil)
     fmt.Println()
@@ -74,7 +76,7 @@ func TestVerification(t *testing.T) {
     // Vmrun deletion
     fmt.Println("\t-- Deleting vmrun executable")
     os.Remove("/tmp/vmlcm/vmrun")
-    err = Verify(vmrun, config)
+    err = Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
     fmt.Println()
@@ -83,7 +85,7 @@ func TestVerification(t *testing.T) {
     fmt.Println("\t-- Restoring vmrun, deleting vmx template")
     createTestVmrun()
     os.Remove("/tmp/vmlcm/test.vmx")
-    err = Verify(vmrun, config)
+    err = Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
     fmt.Println()
@@ -92,7 +94,7 @@ func TestVerification(t *testing.T) {
     fmt.Println("\t-- Restoring template, deleting clones directory")
     createTestTemplate()
     os.Remove("/tmp/vmlcm/clones")
-    err = Verify(vmrun, config)
+    err = Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
     fmt.Println()
@@ -103,7 +105,7 @@ func TestVerification(t *testing.T) {
     os.Remove("/tmp/vmlcm/test.vmx")
     ioutil.WriteFile("/tmp/vmlcm/test", []byte(""), 0644)
     config.TemplatePath = "/tmp/vmlcm/test"
-    err = Verify(vmrun, config)
+    err = Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
     fmt.Println()
@@ -115,7 +117,7 @@ func TestVerification(t *testing.T) {
     config.TemplatePath = "/tmp/vmlcm/test.vmx"
     os.Remove("/tmp/vmlcm/clones")
     ioutil.WriteFile("/tmp/vmlcm/clones", []byte(""), 0644)
-    err = Verify(vmrun, config)
+    err = Verify(logger, vmrun, config, false)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
     fmt.Println()

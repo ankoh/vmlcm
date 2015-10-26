@@ -12,10 +12,17 @@ import (
 
 // Verify verifies the provided settings
 func Verify(
+  logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
-	config *util.LCMConfiguration) error {
+	config *util.LCMConfiguration,
+  silent bool) error {
+  // Disable logger if not verbose
+  var loggerSilent = logger.Silent
+  logger.Silent = silent
+  defer func() { logger.Silent = loggerSilent }()
+
   // First check the paths
-  err := verifyConfigurationPaths(config)
+  err := verifyConfigurationPaths(logger, config)
   if err != nil {
     return err
   }
@@ -23,34 +30,34 @@ func Verify(
   // Test vmrun help
   err = testVmrunHelp(vmrun)
   if err != nil {
-    util.LogVerification("Testing vmrun executable", false)
+    logger.LogVerification("Testing vmrun executable", false)
     return err
   }
-  util.LogVerification("Testing vmrun executable", true)
+  logger.LogVerification("Testing vmrun executable", true)
 
   // Test clone read
   err = testCloneRead(config)
   if err != nil {
-    util.LogVerification("Testing clone list", false)
+    logger.LogVerification("Testing clone list", false)
     return err
   }
-  util.LogVerification("Testing clone list", true)
+  logger.LogVerification("Testing clone list", true)
 
   // Test clone write
   err = testCloneWrite(config)
   if err != nil {
-    util.LogVerification("Testing clone write", false)
+    logger.LogVerification("Testing clone write", false)
     return err
   }
-  util.LogVerification("Testing clone write", true)
+  logger.LogVerification("Testing clone write", true)
 
   // Delete test file
   err = deleteTestFile(config)
   if err != nil {
-    util.LogVerification("Deleting test file", false)
+    logger.LogVerification("Deleting test file", false)
     return err
   }
-  util.LogVerification("Deleting test file", true)
+  logger.LogVerification("Deleting test file", true)
   return nil
 }
 
@@ -120,43 +127,45 @@ func isValidPath(path string) bool {
 }
 
 // validateConfigurationPaths validates a given LCM configuration
-func verifyConfigurationPaths(config *util.LCMConfiguration) error {
+func verifyConfigurationPaths(
+  logger *util.Logger,
+  config *util.LCMConfiguration) error {
 	// Check Vmrun executable
 	if !isValidPath(config.Vmrun) {
-		util.LogVerification("Verifying vmrun path", false)
+		logger.LogVerification("Verifying vmrun path", false)
 		return fmt.Errorf("Invalid vmrun path: %s", config.Vmrun)
 	}
-	util.LogVerification("Verifying vmrun path", true)
+	logger.LogVerification("Verifying vmrun path", true)
 
 	// Check Clones directory
 	if !isValidPath(config.ClonesDirectory) {
-		util.LogVerification("Verifying clones directroy", false)
+		logger.LogVerification("Verifying clones directroy", false)
 		return fmt.Errorf("Invalid clones directory: %s", config.ClonesDirectory)
 	}
-	util.LogVerification("Verifying clones directroy", true)
+	logger.LogVerification("Verifying clones directroy", true)
 
   // Check if Clones directory is a trailing slash
   matches, _ := regexp.MatchString(".*/$", config.ClonesDirectory)
   if !matches {
-    util.LogVerification("Verifying directory trailing slash", false)
+    logger.LogVerification("Verifying directory trailing slash", false)
     return fmt.Errorf("The clones directory path must have a trailing slash")
   }
-  util.LogVerification("Verifying directory trailing slash", true)
+  logger.LogVerification("Verifying directory trailing slash", true)
 
 	// Check Template path
 	if !isValidPath(config.TemplatePath) {
-		util.LogVerification("Verifying template path", false)
+		logger.LogVerification("Verifying template path", false)
 		return fmt.Errorf("Invalid template path: %s", config.TemplatePath)
 	}
-	util.LogVerification("Verifying template path", true)
+	logger.LogVerification("Verifying template path", true)
 
 	// Check if the template path ends with vmx
 	matches, _ = regexp.MatchString(".*\\.vmx$", config.TemplatePath)
 	if !matches {
-		util.LogVerification("Verifying template extension", false)
+		logger.LogVerification("Verifying template extension", false)
 		return fmt.Errorf("The template path must end with '.vmx'")
 	}
-	util.LogVerification("Verifying template extension", true)
+	logger.LogVerification("Verifying template extension", true)
 
 	return nil
 }
