@@ -12,7 +12,7 @@ type Logger struct {
 // NewLogger creates a new Logger
 func NewLogger() *Logger {
   logger := new(Logger)
-  logger.Silent = true
+  logger.Silent = false
   return logger
 }
 
