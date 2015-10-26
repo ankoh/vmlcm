@@ -65,6 +65,7 @@ func TestVerification(t *testing.T) {
 
     // Success
     fmt.Println()
+    fmt.Println()
     err := Verify(vmrun, config)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldBeNil)
@@ -87,10 +88,33 @@ func TestVerification(t *testing.T) {
     So(err, ShouldNotBeNil)
     fmt.Println()
 
-    // Clones directory
+    // Clones directory deletion
     fmt.Println("\t-- Restoring template, deleting clones directory")
     createTestTemplate()
     os.Remove("/tmp/vmlcm/clones")
+    err = Verify(vmrun, config)
+    fmt.Printf("\t%-55s", "")
+    So(err, ShouldNotBeNil)
+    fmt.Println()
+
+    // Invalid template file extension
+    fmt.Println("\t-- Restoring clones, adding invalid template")
+    createTestFolders()
+    os.Remove("/tmp/vmlcm/test.vmx")
+    ioutil.WriteFile("/tmp/vmlcm/test", []byte(""), 0644)
+    config.TemplatePath = "/tmp/vmlcm/test"
+    err = Verify(vmrun, config)
+    fmt.Printf("\t%-55s", "")
+    So(err, ShouldNotBeNil)
+    fmt.Println()
+
+    // File as clone folder
+    fmt.Println("\t-- Restoring template, using file as clone folder")
+    os.Remove("/tmp/vmlcm/test")
+    createTestTemplate()
+    config.TemplatePath = "/tmp/vmlcm/test.vmx"
+    os.Remove("/tmp/vmlcm/clones")
+    ioutil.WriteFile("/tmp/vmlcm/clones", []byte(""), 0644)
     err = Verify(vmrun, config)
     fmt.Printf("\t%-55s", "")
     So(err, ShouldNotBeNil)
