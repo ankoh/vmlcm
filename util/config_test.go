@@ -13,15 +13,8 @@ func TestConfig(t *testing.T) {
       So(err1, ShouldBeNil)
       So(config1.Vmrun, ShouldEqual, "/Applications/VMware Fusion.app/Contents/Library/vmrun")
       So(config1.TemplatePath, ShouldEqual, "/tmp/samplevms/sample1.vmx")
-      So(config1.ClonesDirectory, ShouldEqual, "/tmp/vmclones")
+      So(config1.ClonesDirectory, ShouldEqual, "/tmp/vmclones/")
       So(len(config1.Addresses), ShouldEqual, 9)
-
-      config2, err2 := util.ParseConfiguration("../samples/config/valid2.json")
-      So(err2, ShouldBeNil)
-      So(config2.Vmrun, ShouldEqual, "~/Applications/VMware Fusion.app/Contents/Library/vmrun")
-      So(config2.TemplatePath, ShouldEqual, "./tmp/samplevms/sample2.vmx")
-      So(config2.ClonesDirectory, ShouldEqual, "./tmp/vmclones2")
-      So(len(config2.Addresses), ShouldEqual, 0)
     })
 
     Convey("invalid test files must result in an error", func() {
