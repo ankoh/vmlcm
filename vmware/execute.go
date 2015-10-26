@@ -8,7 +8,7 @@ import(
 // ExecuteCommand executes a shell command and pipes the result to channels
 // When finished, call back the waitGroup
 // That will enable nice dot-progress indicators in the command line
-func ExecuteCommand(
+func executeCommand(
   outputChannel chan string,
   errorChannel chan error,
   binary string,

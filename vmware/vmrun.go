@@ -17,7 +17,7 @@ func (vmrun *Vmrun) Start(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -36,7 +36,7 @@ func (vmrun *Vmrun) Stop(vmx string, hard bool) {
     force = "soft"
   }
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -55,7 +55,7 @@ func (vmrun *Vmrun) Reset(vmx string, hard bool) {
     force = "soft"
   }
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -74,7 +74,7 @@ func (vmrun *Vmrun) Suspend(vmx string, hard bool) {
     force = "soft"
   }
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -86,7 +86,7 @@ func (vmrun *Vmrun) Pause(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -98,7 +98,7 @@ func (vmrun *Vmrun) Unpause(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -110,7 +110,7 @@ func (vmrun *Vmrun) ListSnapshots(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -122,7 +122,7 @@ func (vmrun *Vmrun) Snapshot(vmx string, name string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -134,7 +134,7 @@ func (vmrun *Vmrun) DeleteSnapshot(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -146,7 +146,7 @@ func (vmrun *Vmrun) RevertToSnapshot(vmx string, name string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -158,7 +158,7 @@ func (vmrun *Vmrun) Delete(vmx string) {
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,
@@ -170,7 +170,7 @@ func (vmrun *Vmrun) CloneLinked(template string, destination string, snapshot st
   vmrun.vmrunMutex.Lock()
   defer vmrun.vmrunMutex.Unlock()
 
-  ExecuteCommand(
+  executeCommand(
     vmrun.OutputChannel,
     vmrun.ErrorChannel,
     vmrun.vmrunPath,

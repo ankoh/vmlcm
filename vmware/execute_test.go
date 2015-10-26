@@ -1,9 +1,8 @@
-package vmware_test
+package vmware
 
 import (
 	"testing"
   . "github.com/smartystreets/goconvey/convey"
-  "gitlab.kohn.io/ankoh/vmlcm/vmware"
 )
 
 func TestExecute(t *testing.T) {
@@ -16,7 +15,7 @@ func TestExecute(t *testing.T) {
       defer close(outChan)
       defer close(errChan)
 
-      go vmware.ExecuteCommand(outChan, errChan, "ls", "-la", "./")
+      go executeCommand(outChan, errChan, "ls", "-la", "./")
 
 			// Chooses either out or err
       select {
@@ -33,7 +32,7 @@ func TestExecute(t *testing.T) {
 			defer close(outChan)
 			defer close(errChan)
 
-			go vmware.ExecuteCommand(outChan, errChan, "notexistingcommand", "-foo", "-bar", "42")
+			go executeCommand(outChan, errChan, "notexistingcommand", "-foo", "-bar", "42")
 
 			// Chooses either out or err
 			select {
