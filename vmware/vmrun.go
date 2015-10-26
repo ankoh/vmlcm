@@ -98,56 +98,56 @@ func (*Vmrun) Start(vmx string) error {
 }
 
 // Stop stops a VM
-func(*Vmrun) Stop(vmx string, hard bool) error {
+func (*Vmrun) Stop(vmx string, hard bool) error {
   return nil
 }
 
 // Reset resets a VM
-func(*Vmrun) Reset(vmx string, hard bool) error {
+func (*Vmrun) Reset(vmx string, hard bool) error {
   return nil
 }
 
 // Suspend suspends a VM
-func(*Vmrun) Suspend(vmx string, hard bool) error {
+func (*Vmrun) Suspend(vmx string, hard bool) error {
   return nil
 }
 
 // Pause pauses a VM
-func(*Vmrun) Pause(vmx string) error {
+func (*Vmrun) Pause(vmx string) error {
   return nil
 }
 
 // Unpause unpauses a VM
-func(*Vmrun) Unpause(vmx string) error {
+func (*Vmrun) Unpause(vmx string) error {
   return nil
 }
 
 // ListSnapshots lists the snapshots of a VM
-func(*Vmrun) ListSnapshots(vmx string) error {
+func (*Vmrun) ListSnapshots(vmx string) error {
   return nil
 }
 
 // Snapshot creates a snapshot of a VM
-func(*Vmrun) Snapshot(vmx string, name string) error {
+func (*Vmrun) Snapshot(vmx string, name string) error {
   return nil
 }
 
 // DeleteSnapshot deletes a snapshot of a VM
-func(*Vmrun) DeleteSnapshot(vmx string, name string) error {
+func (*Vmrun) DeleteSnapshot(vmx string, name string) error {
   return nil
 }
 
 // RevertToSnapshot reverts a VM to a snapshot
-func(*Vmrun) RevertToSnapshot(vmx string, name string) error {
+func (*Vmrun) RevertToSnapshot(vmx string, name string) error {
   return nil
 }
 
 // Delete deletes a VM
-func(*Vmrun) Delete(vmx string) error {
+func (*Vmrun) Delete(vmx string) error {
   return nil
 }
 
 // CloneLinked clones a linked VM
-func(*Vmrun) CloneLinked(template string, destination string, snapshot string, name string) error {
+func (*Vmrun) CloneLinked(template string, destination string, snapshot string, name string) error {
   return nil
 }
