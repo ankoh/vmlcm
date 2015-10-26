@@ -8,6 +8,7 @@ type VmrunWrapper interface {
   GetOutputChannel() chan string
   GetErrorChannel() chan error
 
+  List(vmx string)
   Start(vmx string)
   Stop(vmx string, hard bool)
   Reset(vmx string, hard bool)
@@ -39,6 +40,18 @@ func (vmrun *CLIVmrun) GetOutputChannel() chan string {
 // GetErrorChannel returns the errorchannel of the CLIVmrun wrapper
 func (vmrun *CLIVmrun) GetErrorChannel() chan error {
   return vmrun.errorChannel
+}
+
+// List lists all running vms
+func (vmrun *CLIVmrun) List() {
+  vmrun.vmrunMutex.Lock()
+  defer vmrun.vmrunMutex.Unlock()
+
+  executeCommand(
+    vmrun.outputChannel,
+    vmrun.errorChannel,
+    vmrun.vmrunPath,
+    "list")
 }
 
 // Start starts a VM
