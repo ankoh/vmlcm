@@ -45,14 +45,6 @@ func TestVMs(t *testing.T) {
 			So(result[1], ShouldEqual, "/tmp/test2.vmwarevm/test2.vmx")
 		})
 	})
-
-	Convey("Given precompiled RegExs", t, func() {
-		Convey("vmlcmClone must detect valid vmlcm clone paths", func() {
-			path1 := "/foo/bar/vmlcm-ABCDEF0123456789.vmwarevm/vmlcm-ABCDEF0123456789.vmx"
-
-			So(vmlcmClone.MatchString(path1), ShouldBeTrue)
-		})
-	})
 }
 
 func createTestVmwareFolder() {

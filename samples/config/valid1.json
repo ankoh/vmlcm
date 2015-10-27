@@ -2,6 +2,7 @@
   "Vmrun": "/Applications/VMware Fusion.app/Contents/Library/vmrun",
   "TemplatePath": "/tmp/samplevms/sample1.vmx",
   "ClonesDirectory": "/tmp/vmclones/",
+  "Prefix": "POM",
   "Addresses": [
     "a1:b1:c1:d1:e1:f1",
     "a2:b2:c2:d2:e2:f2",

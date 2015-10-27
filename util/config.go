@@ -1,6 +1,7 @@
 package util
 
 import (
+  "regexp"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,7 +16,10 @@ type LCMConfiguration struct {
 	ClonesDirectory string
 	TemplatePath    string
 	Addresses       []string
+  Prefix          string
 }
+
+var validPrefix = regexp.MustCompile("^[A-Za-z0-9]+$")
 
 // ParseConfiguration uses a string path to a json file
 func ParseConfiguration(path string) (*LCMConfiguration, error) {
@@ -48,6 +52,10 @@ func ParseConfiguration(path string) (*LCMConfiguration, error) {
 		err := fmt.Errorf("The configuration file does not contain a valid parameter 'TemplatePath'")
 		return nil, err
 	}
+  if !validPrefix.MatchString(config.Prefix) {
+    err := fmt.Errorf("The configuration file does not contain a parameter 'Prefix' that matches the RegEx /^[A-Za-z0-9]+$/")
+    return nil, err
+  }
 
 	// If Unmarshal was successfull we're done
 	return &config, nil

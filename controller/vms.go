@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	//  "strconv"
+  "strings"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -21,6 +22,14 @@ type virtualMachine struct {
 func getVMs(
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration) ([]*virtualMachine, error) {
+
+  prefix := strings.ToLower(config.Prefix)
+  cloneRegExString := fmt.Sprintf(".*/%s\\-[A-Fa-f0-9]+\\.vmwarevm/%s\\-[A-Fa-f0-9]+\\.vmx$", prefix, prefix)
+  cloneRegEx, err := regexp.Compile(cloneRegExString)
+  if err != nil {
+    return nil, fmt.Errorf("Could not compile Clone RegEx with Prefix %s", config.Prefix)
+  }
+
 	clonesDirectoryPath := config.ClonesDirectory
 	templatePath := config.TemplatePath
 	var vms = make(map[string]*virtualMachine)
@@ -50,7 +59,7 @@ func getVMs(
 		vm.path = runningVM
 		vm.running = true
 		vm.template = vm.path == templatePath
-		vm.clone = vmlcmClone.MatchString(runningVM)
+		vm.clone = cloneRegEx.MatchString(runningVM)
 		vms[runningVM] = vm
 	}
 
@@ -65,7 +74,7 @@ func getVMs(
 		vm.path = cloneDirectoryVM
 		vm.running = true
 		vm.template = vm.path == templatePath
-		vm.clone = vmlcmClone.MatchString(cloneDirectoryVM)
+		vm.clone = cloneRegEx.MatchString(cloneDirectoryVM)
 		vms[cloneDirectoryVM] = vm
 	}
 
@@ -97,7 +106,6 @@ func getRunningVMPaths(
 
 var vmwareExtension = regexp.MustCompile(".*\\.vmwarevm$")
 var vmxExtension = regexp.MustCompile(".*\\.vmx$")
-var vmlcmClone = regexp.MustCompile(".*/vmlcm\\-[A-Fa-f0-9]+\\.vmwarevm/vmlcm\\-[A-Fa-f0-9]+\\.vmx$")
 
 // Tries to get the exact vmx paths of all vms that are in the clone directory
 func discoverVMs(directoryPath string) ([]string, error) {
