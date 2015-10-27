@@ -62,7 +62,7 @@ type LCMArguments struct {
 	ConfigPath       *string    // vmlcm {-f agents.yml} up 3
 	Command          LCMCommand // vmlcm -f agents.yml {up} 3
 	CommandParameter int        // vmlcm -f agents.yml up {3}
-	Test						 bool				// vmlcm -test -f agents.yml verify
+	Test             bool       // vmlcm -test -f agents.yml verify
 }
 
 // ParseArguments parses the provided command line flags & aguments
@@ -70,7 +70,7 @@ func ParseArguments() (*LCMArguments, error) {
 	// Parse flags
 	configPath := flag.String("f", "", "path to the configuration file")
 	flag.Parse()
-  arguments := flag.Args()
+	arguments := flag.Args()
 
 	// Check if the flag has been provided
 	if len(*configPath) == 0 {
@@ -116,12 +116,12 @@ func ParseArguments() (*LCMArguments, error) {
 	if command == UpCommand || command == KeepCommand {
 		if len(arguments) <= 1 {
 			err := fmt.Errorf("The commands up and keep require a number parameter. (vmlcm -f ./agents.yml up 3)")
-      return nil, err
+			return nil, err
 		}
 		param, err := strconv.Atoi(arguments[1])
 		if err != nil || param < 0 {
 			err := fmt.Errorf("%s is not a valid parameter for the commands 'up' and 'keep'", arguments[1])
-      return nil, err
+			return nil, err
 		}
 		commandParameter = param
 	}

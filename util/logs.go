@@ -6,21 +6,21 @@ import (
 
 // Logger allows to log messages in a unified way
 type Logger struct {
-  Silent bool
+	Silent bool
 }
 
 // NewLogger creates a new Logger
 func NewLogger() *Logger {
-  logger := new(Logger)
-  logger.Silent = false
-  return logger
+	logger := new(Logger)
+	logger.Silent = false
+	return logger
 }
 
 // LogVerification prints a validation message
 func (logger *Logger) LogVerification(message string, successful bool) {
-  if logger.Silent {
-    return
-  }
+	if logger.Silent {
+		return
+	}
 
 	var status = "Failed"
 	var statusColor = ColorRed

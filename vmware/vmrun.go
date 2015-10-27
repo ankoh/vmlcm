@@ -9,7 +9,7 @@ type VmrunWrapper interface {
 	GetErrorChannel() chan error
 	Close()
 
-  Help()
+	Help()
 	List()
 	Start(vmx string)
 	Stop(vmx string, hard bool)

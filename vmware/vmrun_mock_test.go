@@ -3,8 +3,8 @@ package vmware_test
 import (
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/ankoh/vmlcm/vmware"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestExecute(t *testing.T) {
@@ -21,7 +21,7 @@ func TestExecute(t *testing.T) {
 			select {
 			case out := <-outChannel:
 				So(out, ShouldNotBeNil)
-        So(out, ShouldContainSubstring, "vmrun version 1.14.2 build-2779224")
+				So(out, ShouldContainSubstring, "vmrun version 1.14.2 build-2779224")
 			case err := <-errChannel:
 				So(err, ShouldBeNil)
 			}
@@ -36,7 +36,7 @@ func TestExecute(t *testing.T) {
 			select {
 			case out := <-outChannel:
 				So(out, ShouldNotBeNil)
-        So(out, ShouldContainSubstring, "/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx")
+				So(out, ShouldContainSubstring, "/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx")
 			case err := <-errChannel:
 				So(err, ShouldBeNil)
 			}

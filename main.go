@@ -1,11 +1,11 @@
 package main
 
-import(
+import (
 	"fmt"
 
 	"github.com/ankoh/vmlcm/controller"
-	"github.com/ankoh/vmlcm/vmware"
 	"github.com/ankoh/vmlcm/util"
+	"github.com/ankoh/vmlcm/vmware"
 )
 
 func main() {
@@ -32,27 +32,27 @@ func main() {
 
 	// Switch commands
 	switch args.Command {
-		case util.VerifyCommand:
-			err := controller.Verify(logger, vmrun, config, false)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-		case util.StatusCommand:
-			err := controller.Status(logger, vmrun, config, false)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-		case util.UpCommand:
-			fmt.Println("Not implemented yet")
-		case util.KeepCommand:
-			fmt.Println("Not implemented yet")
-		case util.ResetCommand:
-			fmt.Println("Not implemented yet")
-		case util.StartCommand:
-			fmt.Println("Not implemented yet")
-		case util.StopCommand:
-			fmt.Println("Not implemented yet")
-		case util.SuspendCommand:
-			fmt.Println("Not implemented yet")
+	case util.VerifyCommand:
+		err := controller.Verify(logger, vmrun, config, false)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	case util.StatusCommand:
+		err := controller.Status(logger, vmrun, config, false)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	case util.UpCommand:
+		fmt.Println("Not implemented yet")
+	case util.KeepCommand:
+		fmt.Println("Not implemented yet")
+	case util.ResetCommand:
+		fmt.Println("Not implemented yet")
+	case util.StartCommand:
+		fmt.Println("Not implemented yet")
+	case util.StopCommand:
+		fmt.Println("Not implemented yet")
+	case util.SuspendCommand:
+		fmt.Println("Not implemented yet")
 	}
 }

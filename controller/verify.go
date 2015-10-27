@@ -2,9 +2,9 @@ package controller
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"regexp"
-	"io/ioutil"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -12,20 +12,20 @@ import (
 
 // Verify verifies the provided settings
 func Verify(
-  logger *util.Logger,
+	logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration,
-  silent bool) error {
-  // Disable logger if not verbose
-  var loggerSilent = logger.Silent
-  logger.Silent = silent
-  defer func() { logger.Silent = loggerSilent }()
+	silent bool) error {
+	// Disable logger if not verbose
+	var loggerSilent = logger.Silent
+	logger.Silent = silent
+	defer func() { logger.Silent = loggerSilent }()
 
-  // First check the paths
-  err := verifyConfigurationPaths(logger, config)
-  if err != nil {
-    return err
-  }
+	// First check the paths
+	err := verifyConfigurationPaths(logger, config)
+	if err != nil {
+		return err
+	}
 
 	// Verify Mac addresses
 	err = testMacAddresses(config)
@@ -35,30 +35,29 @@ func Verify(
 	}
 	logger.LogVerification("Verifying MAC addresses", true)
 
-  // Test vmrun help
-  err = testVmrunHelp(vmrun)
-  if err != nil {
-    logger.LogVerification("Verifying vmrun executable", false)
-    return err
-  }
-  logger.LogVerification("Verifying vmrun executable", true)
+	// Test vmrun help
+	err = testVmrunHelp(vmrun)
+	if err != nil {
+		logger.LogVerification("Verifying vmrun executable", false)
+		return err
+	}
+	logger.LogVerification("Verifying vmrun executable", true)
 
-  // Test clone read
-  err = testCloneRead(config)
-  if err != nil {
-    logger.LogVerification("Verifying clone list", false)
-    return err
-  }
-  logger.LogVerification("Verifying clone list", true)
+	// Test clone read
+	err = testCloneRead(config)
+	if err != nil {
+		logger.LogVerification("Verifying clone list", false)
+		return err
+	}
+	logger.LogVerification("Verifying clone list", true)
 
-  // Test clone write
-  err = testCloneWrite(config)
-  if err != nil {
-    logger.LogVerification("Verifying clone write", false)
-    return err
-  }
-  logger.LogVerification("Verifying clone write", true)
-
+	// Test clone write
+	err = testCloneWrite(config)
+	if err != nil {
+		logger.LogVerification("Verifying clone write", false)
+		return err
+	}
+	logger.LogVerification("Verifying clone write", true)
 
 	// Delete test file
 	err = deleteTestFile(config)
@@ -68,8 +67,7 @@ func Verify(
 	}
 	logger.LogVerification("Deleting test file", true)
 
-
-  return nil
+	return nil
 }
 
 func testMacAddresses(config *util.LCMConfiguration) error {
@@ -88,28 +86,28 @@ func testVmrunHelp(vmrun vmware.VmrunWrapper) error {
 	if err != nil {
 		return err
 	}
-  return nil
+	return nil
 }
 
 func testCloneRead(config *util.LCMConfiguration) error {
-  // Try to read from the clones directory to check read permissions
-  _, err := util.ListDirectory(config.ClonesDirectory)
-  return err
+	// Try to read from the clones directory to check read permissions
+	_, err := util.ListDirectory(config.ClonesDirectory)
+	return err
 }
 
 // Tries to create a dummy file in the clones directory to check write permissions
 func testCloneWrite(config *util.LCMConfiguration) error {
-  testBuffer := []byte("vmlcm write test\n")
-  testFilePath := fmt.Sprintf("%s%s", config.ClonesDirectory, "test")
-  err := ioutil.WriteFile(testFilePath, testBuffer, 0644)
-  return err
+	testBuffer := []byte("vmlcm write test\n")
+	testFilePath := fmt.Sprintf("%s%s", config.ClonesDirectory, "test")
+	err := ioutil.WriteFile(testFilePath, testBuffer, 0644)
+	return err
 }
 
 // Deletes the test file again
 func deleteTestFile(config *util.LCMConfiguration) error {
-  testFilePath := fmt.Sprintf("%s%s", config.ClonesDirectory, "test")
-  err := os.Remove(testFilePath)
-  return err
+	testFilePath := fmt.Sprintf("%s%s", config.ClonesDirectory, "test")
+	err := os.Remove(testFilePath)
+	return err
 }
 
 // Regular expressions
@@ -145,8 +143,8 @@ func isValidPath(path string) bool {
 
 // validateConfigurationPaths validates a given LCM configuration
 func verifyConfigurationPaths(
-  logger *util.Logger,
-  config *util.LCMConfiguration) error {
+	logger *util.Logger,
+	config *util.LCMConfiguration) error {
 	// Check Vmrun executable
 	if !isValidPath(config.Vmrun) {
 		logger.LogVerification("Verifying vmrun path", false)
@@ -161,13 +159,13 @@ func verifyConfigurationPaths(
 	}
 	logger.LogVerification("Verifying clones directroy", true)
 
-  // Check if Clones directory is a trailing slash
-  matches, err := regexp.MatchString(".*/$", config.ClonesDirectory)
-  if err != nil || !matches {
-    logger.LogVerification("Verifying directory trailing slash", false)
-    return fmt.Errorf("The clones directory path must have a trailing slash")
-  }
-  logger.LogVerification("Verifying directory trailing slash", true)
+	// Check if Clones directory is a trailing slash
+	matches, err := regexp.MatchString(".*/$", config.ClonesDirectory)
+	if err != nil || !matches {
+		logger.LogVerification("Verifying directory trailing slash", false)
+		return fmt.Errorf("The clones directory path must have a trailing slash")
+	}
+	logger.LogVerification("Verifying directory trailing slash", true)
 
 	// Check Template path
 	if !isValidPath(config.TemplatePath) {
