@@ -23,4 +23,5 @@ github:
     - chmod 600 ~/.ssh/config
     - chmod 600 ~/.ssh/github.key
     - chmod 600 ~/.ssh/known_hosts
+    - git config --global push.default simple
     - git push ssh://github/ankoh/vmlcm.git
