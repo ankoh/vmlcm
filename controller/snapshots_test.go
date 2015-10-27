@@ -29,5 +29,10 @@ func TestSnapshots(t *testing.T) {
       So(snapshots[0], ShouldEqual, "SetUp")
       So(snapshots[1], ShouldEqual, "POM 2015")
 		})
+
+    Convey("createTemplateSnapshot should be able to create a snapshot", func() {
+			err := createTemplateSnapshot(vmrun, config, false)
+			So(err, ShouldBeNil)
+		})
   })
 }

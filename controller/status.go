@@ -47,7 +47,7 @@ func Status(
 
 	// Print report
 	if !silent {
-		printHeader()
+		util.PrintASCIIHeader()
 		fmt.Println()
 		fmt.Printf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone)
 		fmt.Printf("%-20s %s\n", "Vmrun version", version.version)
@@ -84,15 +84,6 @@ func Status(
 		fmt.Println()
 	}
 	return nil
-}
-
-func printHeader() {
-	fmt.Println("                    __              ")
-	fmt.Println("   _   ______ ___  / /___ ___  _____")
-	fmt.Println("  | | / / __ `__ \\/ / __ `__ \\/ ___/")
-	fmt.Println("  | |/ / / / / / / / / / / / / /__  ")
-	fmt.Println("  |___/_/ /_/ /_/_/_/ /_/ /_/\\___/  ")
-	fmt.Println("                                    ")
 }
 
 var helpVmrunVersion = regexp.MustCompile("vmrun version (\\d+\\.\\d+\\.\\d+) build-(\\d+)")

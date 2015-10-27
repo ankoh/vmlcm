@@ -3,6 +3,8 @@ package controller
 import(
   "strings"
   "fmt"
+  "strconv"
+  "time"
 
   "github.com/ankoh/vmlcm/util"
   "github.com/ankoh/vmlcm/vmware"
@@ -40,4 +42,27 @@ func getTemplateSnapshots(
     result = append(result, line)
   }
 	return result, nil
+}
+
+// createTemplateSnapshot creates a prefixed snapshot of the template
+func createTemplateSnapshot(
+  vmrun vmware.VmrunWrapper,
+  config *util.LCMConfiguration,
+  withSpinner bool) error {
+  timestamp := int(time.Now().Unix())
+
+  // Create snapshot name
+  timestampString := strconv.Itoa(timestamp)
+  snapshotName := fmt.Sprintf("%s-%s", config.Prefix, timestampString)
+
+  vmrunOut := vmrun.GetOutputChannel()
+	vmrunErr := vmrun.GetErrorChannel()
+  go vmrun.Snapshot(config.TemplatePath, snapshotName)
+
+	select {
+	case <-vmrunOut:
+	case err := <-vmrunErr:
+		return err
+	}
+  return nil
 }

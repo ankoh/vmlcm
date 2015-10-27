@@ -97,7 +97,7 @@ func (vmrun *MockVmrun) ListSnapshots(vmx string) {
 
 // Snapshot creates a snapshot of a VM
 func (vmrun *MockVmrun) Snapshot(vmx string, name string) {
-
+	vmrun.outputChannel <- ""
 }
 
 // DeleteSnapshot deletes a snapshot of a VM
