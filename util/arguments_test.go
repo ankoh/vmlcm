@@ -30,14 +30,14 @@ func TestArguments(t *testing.T) {
 			os.Args = []string{
 				"vmlcm",
 				"-f=./agents.json",
-				"up", "3"}
+				"use", "3"}
 
 			args, err := util.ParseArguments()
 			So(err, ShouldBeNil)
 			So(args, ShouldNotBeNil)
 			So(args.ConfigPath, ShouldNotBeNil)
 			So(*args.ConfigPath, ShouldEqual, "./agents.json")
-			So(args.Command, ShouldEqual, util.UpCommand)
+			So(args.Command, ShouldEqual, util.UseCommand)
 			So(args.CommandIntParameter, ShouldEqual, 3)
 		})
 

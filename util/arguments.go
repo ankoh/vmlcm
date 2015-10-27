@@ -24,22 +24,12 @@ const (
 	// * Gathers information about the used template
 	StatusCommand
 
-	// UpCommand <number> ensures that the specified amount of clones is <<up>>
-	// * up 10 creates 10 if no clones are existing
-	// * up 10 creates 6 clones if 4 clones are existing
-	// * up 0 creates 0 clones
-	UpCommand
-
-	// KeepCommand <number> keeps the number of clones and deletes the rest
+	// UseCommand <number> ensures that specified the number of clones exists
 	// * keep 10 with 10 existing == noop
 	// * keep 10 with 4 clones existing == noop
 	// * keep 4 with 10 clones existing == delete 6 clones
 	// * keep 0 == delete all clones
-	KeepCommand
-
-	// ResetCommand resets all clones
-	// This is probably faster than up 0 -> up 10
-	ResetCommand
+	UseCommand
 
 	// StartCommand starts all currently existing clones
 	// This option shall be used when build agents are manually shutdown/suspended
@@ -50,11 +40,6 @@ const (
 	// This option shall be used when build agents need to be stopped
 	// in maintenance windows for example
 	StopCommand
-
-	// SuspendCommand suspends all currently existing clones
-	// Similar to stop this option stops all clones in maintenance windows while
-	// maintaining the vm state
-	SuspendCommand
 )
 
 // LCMArguments stores the options that have been passed to vmlcm
@@ -93,18 +78,12 @@ func ParseArguments() (*LCMArguments, error) {
 		command = VerifyCommand
 	case "status":
 		command = StatusCommand
-	case "up":
-		command = UpCommand
-	case "keep":
-		command = KeepCommand
-	case "reset":
-		command = ResetCommand
+	case "use":
+		command = UseCommand
 	case "start":
 		command = StartCommand
 	case "stop":
 		command = StopCommand
-	case "suspend":
-		command = SuspendCommand
 	default:
 		err := fmt.Errorf("Unknown command %s", commandString)
 		return nil, err
@@ -113,14 +92,14 @@ func ParseArguments() (*LCMArguments, error) {
 	var commandParameter int
 
 	// If needed, check if command parameter has been provided
-	if command == UpCommand || command == KeepCommand {
+	if command == UseCommand {
 		if len(arguments) <= 1 {
-			err := fmt.Errorf("The commands up and keep require a number parameter. (vmlcm -f ./agents.yml up 3)")
+			err := fmt.Errorf("The command 'use' requires a number parameter. (vmlcm -f ./agents.yml use 3)")
 			return nil, err
 		}
 		param, err := strconv.Atoi(arguments[1])
 		if err != nil || param < 0 {
-			err := fmt.Errorf("%s is not a valid parameter for the commands 'up' and 'keep'", arguments[1])
+			err := fmt.Errorf("%s is not a valid parameter for the command 'use'", arguments[1])
 			return nil, err
 		}
 		commandParameter = param

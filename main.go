@@ -42,17 +42,11 @@ func main() {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-	case util.UpCommand:
-		fmt.Println("Not implemented yet")
-	case util.KeepCommand:
-		fmt.Println("Not implemented yet")
-	case util.ResetCommand:
+	case util.UseCommand:
 		fmt.Println("Not implemented yet")
 	case util.StartCommand:
 		fmt.Println("Not implemented yet")
 	case util.StopCommand:
-		fmt.Println("Not implemented yet")
-	case util.SuspendCommand:
 		fmt.Println("Not implemented yet")
 	}
 }

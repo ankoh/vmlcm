@@ -17,6 +17,24 @@ type virtualMachine struct {
 	running  bool
 }
 
+// getClones calls getVMs to get all the informations about the virtual machines
+// It then filters the VMs for clones
+func getClones(
+	vmrun vmware.VmrunWrapper,
+	config *util.LCMConfiguration) ([]*virtualMachine, error) {
+	vms, err := getVMs(vmrun, config)
+	if err != nil {
+		return nil, err
+	}
+	var result []*virtualMachine
+	for _, vm := range vms {
+		if vm.clone {
+			result = append(result, vm)
+		}
+	}
+	return result, nil
+}
+
 // getVMs checks the clones directory as well as running vms
 // and returns virtualMachine objects
 func getVMs(
