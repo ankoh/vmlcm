@@ -61,7 +61,7 @@ const (
 type LCMArguments struct {
 	ConfigPath       *string    // vmlcm {-f agents.yml} up 3
 	Command          LCMCommand // vmlcm -f agents.yml {up} 3
-	CommandParameter int        // vmlcm -f agents.yml up {3}
+	CommandIntParameter int        // vmlcm -f agents.yml up {3}
 	Test             bool       // vmlcm -test -f agents.yml verify
 }
 
@@ -129,7 +129,7 @@ func ParseArguments() (*LCMArguments, error) {
 	parameter := &LCMArguments{
 		ConfigPath:       configPath,
 		Command:          command,
-		CommandParameter: commandParameter}
+		CommandIntParameter: commandParameter}
 
 	return parameter, nil
 }

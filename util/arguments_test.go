@@ -38,7 +38,7 @@ func TestArguments(t *testing.T) {
 			So(args.ConfigPath, ShouldNotBeNil)
 			So(*args.ConfigPath, ShouldEqual, "./agents.json")
 			So(args.Command, ShouldEqual, util.UpCommand)
-			So(args.CommandParameter, ShouldEqual, 3)
+			So(args.CommandIntParameter, ShouldEqual, 3)
 		})
 
 		Convey("no arguments should result in an error", func() {
