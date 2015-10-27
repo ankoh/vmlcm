@@ -32,17 +32,25 @@ func TestVMs(t *testing.T) {
       So(result[12], ShouldEqual, "/Volumes/VM_SB3/VMware/monitorbruegge.vmwarevm/monitorbruegge.vmx")
     })
 
-    Convey("getDirectoryVMs should be able to discover vmx files in a directory", func() {
+    Convey("discoverVMsInDirectory should be able to discover vmx files in a directory", func() {
       createTestVmwareFolder()
       defer deleteTestVmwareFolder()
 
-      result, err := getDirectoryVMs("/tmp/")
+      result, err := discoverVMs("/tmp/")
 
       So(err, ShouldBeNil)
       So(result, ShouldNotBeNil)
       So(len(result), ShouldEqual, 2)
       So(result[0], ShouldEqual, "/tmp/test1.vmwarevm/test1.vmx")
       So(result[1], ShouldEqual, "/tmp/test2.vmwarevm/test2.vmx")
+    })
+  })
+
+  Convey("Given precompiled RegExs", t, func() {
+    Convey("vmlcmClone must detect valid vmlcm clone paths", func() {
+      path1 := "/foo/bar/vmlcm-ABCDEF0123456789.vmwarevm/vmlcm-ABCDEF0123456789.vmx"
+
+      So(vmlcmClone.MatchString(path1), ShouldBeTrue)
     })
   })
 }
