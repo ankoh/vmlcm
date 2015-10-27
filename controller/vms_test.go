@@ -36,25 +36,25 @@ func TestVMs(t *testing.T) {
 			createTestVmwareFolder()
 			defer deleteTestVmwareFolder()
 
-			result, err := discoverVMs("/tmp/")
+			result, err := discoverVMs("/tmp/vmlcmvms/")
 
 			So(err, ShouldBeNil)
 			So(result, ShouldNotBeNil)
 			So(len(result), ShouldEqual, 2)
-			So(result[0], ShouldEqual, "/tmp/test1.vmwarevm/test1.vmx")
-			So(result[1], ShouldEqual, "/tmp/test2.vmwarevm/test2.vmx")
+			So(result[0], ShouldEqual, "/tmp/vmlcmvms/test1.vmwarevm/test1.vmx")
+			So(result[1], ShouldEqual, "/tmp/vmlcmvms/test2.vmwarevm/test2.vmx")
 		})
 	})
 }
 
 func createTestVmwareFolder() {
-	os.Mkdir("/tmp/test1.vmwarevm", 0755)
-	os.Mkdir("/tmp/test1.vmwarevm/test1.vmx", 0755)
-	os.Mkdir("/tmp/test2.vmwarevm", 0755)
-	os.Mkdir("/tmp/test2.vmwarevm/test2.vmx", 0755)
+  os.Mkdir("/tmp/vmlcmvms/", 0755)
+	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm", 0755)
+	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm/test1.vmx", 0755)
+	os.Mkdir("/tmp/vmlcmvms/test2.vmwarevm", 0755)
+	os.Mkdir("/tmp/vmlcmvms/test2.vmwarevm/test2.vmx", 0755)
 }
 
 func deleteTestVmwareFolder() {
-	os.RemoveAll("/tmp/test1.vmwarevm")
-	os.RemoveAll("/tmp/test2.vmwarevm")
+	os.RemoveAll("/tmp/vmlcmvms/")
 }

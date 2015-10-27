@@ -60,9 +60,9 @@ func TestVerification(t *testing.T) {
 
 		vmrun := vmware.NewMockVmrun()
 		config := new(util.LCMConfiguration)
-		config.ClonesDirectory = "/tmp/vmlcm/clones/"
-		config.TemplatePath = "/tmp/vmlcm/test.vmx"
-		config.Vmrun = "/tmp/vmlcm/vmrun"
+		config.ClonesDirectory = "/tmp/vmlcmverify/clones/"
+		config.TemplatePath = "/tmp/vmlcmverify/test.vmx"
+		config.Vmrun = "/tmp/vmlcmverify/vmrun"
 		config.Addresses = []string{
 			"a1:b1:c1:d1:e1:f1",
 			"a2:b2:c2:d2:e2:f2",
@@ -79,56 +79,56 @@ func TestVerification(t *testing.T) {
 
 		// Vmrun deletion
 		config.Addresses = config.Addresses[:len(config.Addresses)-1]
-		os.Remove("/tmp/vmlcm/vmrun")
+		os.Remove("/tmp/vmlcmverify/vmrun")
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// Template deletion
 		createTestVmrun()
-		os.Remove("/tmp/vmlcm/test.vmx")
+		os.Remove("/tmp/vmlcmverify/test.vmx")
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// Clones directory deletion
 		createTestTemplate()
-		os.Remove("/tmp/vmlcm/clones")
+		os.Remove("/tmp/vmlcmverify/clones")
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// Invalid template file extension
 		createTestFolders()
-		os.Remove("/tmp/vmlcm/test.vmx")
-		ioutil.WriteFile("/tmp/vmlcm/test", []byte(""), 0644)
-		config.TemplatePath = "/tmp/vmlcm/test"
+		os.Remove("/tmp/vmlcmverify/test.vmx")
+		ioutil.WriteFile("/tmp/vmlcmverify/test", []byte(""), 0644)
+		config.TemplatePath = "/tmp/vmlcmverify/test"
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// File as clone folder
-		os.Remove("/tmp/vmlcm/test")
+		os.Remove("/tmp/vmlcmverify/test")
 		createTestTemplate()
-		config.TemplatePath = "/tmp/vmlcm/test.vmx"
-		os.Remove("/tmp/vmlcm/clones")
-		ioutil.WriteFile("/tmp/vmlcm/clones", []byte(""), 0644)
+		config.TemplatePath = "/tmp/vmlcmverify/test.vmx"
+		os.Remove("/tmp/vmlcmverify/clones")
+		ioutil.WriteFile("/tmp/vmlcmverify/clones", []byte(""), 0644)
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 	})
 }
 
 func createTestFolders() {
-	os.Mkdir("/tmp/vmlcm", 0755)
-	os.Mkdir("/tmp/vmlcm/clones", 0755)
+	os.Mkdir("/tmp/vmlcmverify", 0755)
+	os.Mkdir("/tmp/vmlcmverify/clones", 0755)
 }
 
 func createTestTemplate() {
 	testBuffer := []byte("vmlcm test vmx\n")
-	ioutil.WriteFile("/tmp/vmlcm/test.vmx", testBuffer, 0644)
+	ioutil.WriteFile("/tmp/vmlcmverify/test.vmx", testBuffer, 0644)
 }
 
 func createTestVmrun() {
 	testBuffer := []byte("vmlcm test vmrun\n")
-	ioutil.WriteFile("/tmp/vmlcm/vmrun", testBuffer, 0755)
+	ioutil.WriteFile("/tmp/vmlcmverify/vmrun", testBuffer, 0755)
 }
 
 func deleteAll() {
-	os.RemoveAll("/tmp/vmlcm")
+	os.RemoveAll("/tmp/vmlcmverify")
 }
