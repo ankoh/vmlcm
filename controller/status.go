@@ -10,7 +10,7 @@ import (
 
 var helpVmrunVersion = regexp.MustCompile("vmrun version (\\d+\\.\\d+\\.\\d+) build-(\\d+)")
 var listVMNumber = regexp.MustCompile("Total running VMs: (\\d+)")
-var listRunningVMs = regexp.MustCompile("/.*\\.vmx")
+var listVMPaths = regexp.MustCompile("/.*\\.vmx")
 
 type vmrunVersion struct {
   version string
@@ -66,4 +66,22 @@ func getRunningVMNumber(
   }
 
   return number, nil
+}
+
+// getRunningVMPaths returns the paths of running VMs
+func getRunningVMPaths(
+  vmrun vmware.VmrunWrapper) ([]string, error) {
+  vmrunOut := vmrun.GetOutputChannel()
+  vmrunErr := vmrun.GetErrorChannel()
+  go vmrun.List()
+
+  var response string
+  select {
+    case response = <- vmrunOut:
+    case err := <- vmrunErr:
+      return nil, err
+  }
+
+  matches := listVMPaths.FindAllString(response, -1)
+  return matches, nil
 }
