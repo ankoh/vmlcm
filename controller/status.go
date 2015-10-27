@@ -69,7 +69,7 @@ func Status(
 		fmt.Printf("%-20s %s%d%s\n", "Linked clones", util.ColorNone, len(clones), util.ColorNone)
 		fmt.Println()
 		if len(clones) == 0 {
-			fmt.Printf("  No clones available")
+			fmt.Printf("  No clones available\n")
 		} else {
 			for _, clone := range clones {
 				if clone.running {
