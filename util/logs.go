@@ -23,7 +23,7 @@ func (logger *Logger) LogVerification(message string, successful bool) {
 	}
 
 	var status = "Failed"
-	var statusColor = ColorRed
+	var statusColor = ColorLightGray
 	if successful {
 		status = "Ok"
 		statusColor = ColorCyan

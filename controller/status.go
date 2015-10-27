@@ -82,7 +82,7 @@ func Status(
 					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorCyan, "Online", util.ColorNone)
 				} else {
 					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
-					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorRed, "Offline", util.ColorNone)
+					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorLightGray, "Offline", util.ColorNone)
 				}
 			}
 		}
