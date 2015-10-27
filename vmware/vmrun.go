@@ -260,6 +260,5 @@ func (vmrun *CLIVmrun) CloneLinked(template string, destination string, snapshot
 		"-T", "fusion",
 		"clone", template, destination,
 		"linked",
-		fmt.Sprintf("-snapshot=%s", snapshot),
-		fmt.Sprintf("-cloneName=%s", name))
+		fmt.Sprintf("-snapshot=%s", snapshot))
 }

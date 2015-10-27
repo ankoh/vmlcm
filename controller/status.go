@@ -77,7 +77,7 @@ func Status(
 			fmt.Printf("  No clones available")
 		} else {
 			for _, clone := range clones {
-				if !clone.running {
+				if clone.running {
 					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
 					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorCyan, "Online", util.ColorNone)
 				} else {
