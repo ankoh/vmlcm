@@ -23,4 +23,4 @@ github:
     - chmod 600 ~/.ssh/config
     - chmod 600 ~/.ssh/github.key
     - chmod 600 ~/.ssh/known_hosts
-    - git push --all ssh://github/ankoh/mendeley-cache-server.git
+    - git push --all ssh://github/ankoh/vmlcm.git
