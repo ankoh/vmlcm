@@ -2,7 +2,7 @@ package main
 
 import(
 	"fmt"
-	"gitlab.kohn.io/ankoh/vmlcm/util"
+	"github.com/ankoh/vmlcm/util"
 )
 
 func main() {

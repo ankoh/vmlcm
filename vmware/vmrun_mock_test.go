@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"gitlab.kohn.io/ankoh/vmlcm/vmware"
+	"github.com/ankoh/vmlcm/vmware"
 )
 
 func TestExecute(t *testing.T) {

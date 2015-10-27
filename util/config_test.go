@@ -3,7 +3,7 @@ package util_test
 import (
 	"testing"
   . "github.com/smartystreets/goconvey/convey"
-  "gitlab.kohn.io/ankoh/vmlcm/util"
+  "github.com/ankoh/vmlcm/util"
 )
 
 func TestConfig(t *testing.T) {

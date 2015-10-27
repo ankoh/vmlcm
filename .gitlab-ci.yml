@@ -1,7 +1,7 @@
 before_script:
-  - mkdir -p /workspace/src/gitlab.kohn.io/ankoh/vmlcm
-  - cp -r ./* /workspace/src/gitlab.kohn.io/ankoh/vmlcm
-  - cd /workspace/src/gitlab.kohn.io/ankoh/vmlcm
+  - mkdir -p /workspace/src/github.com/ankoh/vmlcm
+  - cp -r ./* /workspace/src/github.com/ankoh/vmlcm
+  - cd /workspace/src/github.com/ankoh/vmlcm
   - export GOPATH=/workspace
   - go get -d -t -v ./...
   - go install -v

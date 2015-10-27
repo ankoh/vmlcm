@@ -6,8 +6,8 @@ import (
   "io/ioutil"
   "os"
 
-  "gitlab.kohn.io/ankoh/vmlcm/vmware"
-  "gitlab.kohn.io/ankoh/vmlcm/util"
+  "github.com/ankoh/vmlcm/vmware"
+  "github.com/ankoh/vmlcm/util"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

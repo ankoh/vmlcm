@@ -5,7 +5,7 @@ import (
 	"testing"
   "flag"
   . "github.com/smartystreets/goconvey/convey"
-  "gitlab.kohn.io/ankoh/vmlcm/util"
+  "github.com/ankoh/vmlcm/util"
 )
 
 func TestArguments(t *testing.T) {

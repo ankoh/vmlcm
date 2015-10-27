@@ -6,8 +6,8 @@ import (
 	"regexp"
   "io/ioutil"
 
-	"gitlab.kohn.io/ankoh/vmlcm/util"
-	"gitlab.kohn.io/ankoh/vmlcm/vmware"
+	"github.com/ankoh/vmlcm/util"
+	"github.com/ankoh/vmlcm/vmware"
 )
 
 // Verify verifies the provided settings
