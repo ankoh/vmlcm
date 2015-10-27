@@ -1,7 +1,11 @@
 package vmware
 
-import "fmt"
-import "sync"
+import (
+	"fmt"
+	"sync"
+	"os"
+)
+
 
 // VmrunWrapper provides access to the Vmrun binary
 type VmrunWrapper interface {
@@ -22,7 +26,8 @@ type VmrunWrapper interface {
 	DeleteSnapshot(vmx string)
 	RevertToSnapshot(vmx string, name string)
 	Delete(vmx string)
-	CloneLinked(template string, destination string, snapshot string, name string)
+	CloneLinked(template string,
+		cloneDir string, cloneName string, snapshot string)
 }
 
 // CLIVmrun provides access to many of the VMware Fusion vmrun API through the command line
@@ -249,16 +254,25 @@ func (vmrun *CLIVmrun) Delete(vmx string) {
 }
 
 // CloneLinked clones a linked VM
-func (vmrun *CLIVmrun) CloneLinked(template string, destination string, snapshot string, name string) {
+func (vmrun *CLIVmrun) CloneLinked(
+	template string,
+	cloneDir string,
+	cloneName string,
+	snapshot string) {
 	vmrun.vmrunMutex.Lock()
 	defer vmrun.vmrunMutex.Unlock()
 
+	vmwarevmPath := fmt.Sprintf("%s%s.vmwarevm", cloneDir, cloneName)
+	vmxPath := fmt.Sprintf("%s/%s.vmx", vmwarevmPath, cloneName)
+
+	os.Mkdir(vmwarevmPath, 0755)
 	executeCommand(
 		vmrun.outputChannel,
 		vmrun.errorChannel,
 		vmrun.vmrunPath,
 		"-T", "fusion",
-		"clone", template, destination,
+		"clone", template, vmxPath,
 		"linked",
-		fmt.Sprintf("-snapshot=%s", snapshot))
+		fmt.Sprintf("-snapshot=%s", snapshot),
+		fmt.Sprintf("-cloneName=%s", cloneName))
 }

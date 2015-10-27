@@ -116,6 +116,5 @@ func (vmrun *MockVmrun) Delete(vmx string) {
 }
 
 // CloneLinked clones a linked VM
-func (vmrun *MockVmrun) CloneLinked(template string, destination string, snapshot string, name string) {
-
+func (vmrun *MockVmrun) CloneLinked(template string, cloneDir string, cloneName string, snapshot string){
 }
