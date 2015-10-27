@@ -22,11 +22,6 @@ func Status(
 	if err != nil {
 		return err
 	}
-	// Fetch running vms number
-	_, err = getRunningVMNumber(vmrun)
-	if err != nil {
-		return err
-	}
 
 	// Fetch all vms that can be discovered easily (clone folder && running)
 	vms, err := getVMs(vmrun, config)
