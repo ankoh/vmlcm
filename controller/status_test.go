@@ -19,5 +19,12 @@ func TestStatus(t *testing.T) {
       So(result.build, ShouldEqual, "2779224")
     })
 
+    Convey("getRunningVMNumber should be able to parse the number of running vms", func() {
+      result, err := getRunningVMNumber(vmrun)
+
+      So(err, ShouldBeNil)
+      So(result, ShouldEqual, 13)
+    })
+
   })
 }
