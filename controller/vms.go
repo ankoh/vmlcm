@@ -16,6 +16,8 @@ type virtualMachine struct {
 	running  bool
 }
 
+// getVMs checks the clones directory as well as running vms
+// and returns virtualMachine objects
 func getVMs(
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration) ([]*virtualMachine, error) {
