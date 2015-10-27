@@ -22,9 +22,11 @@ func (logger *Logger) LogVerification(message string, successful bool) {
     return
   }
 
-	var status = "[Failed]"
+	var status = "Failed"
+	var statusColor = ColorRed
 	if successful {
-		status = "[Ok]"
+		status = "Ok"
+		statusColor = ColorGreen
 	}
-	fmt.Printf("%-50s %s\n", message, status)
+	fmt.Printf("%-50s [%s%s%s]\n", message, statusColor, status, ColorNone)
 }
