@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
-  "io/ioutil"
+	"io/ioutil"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -93,7 +93,7 @@ func testVmrunHelp(vmrun vmware.VmrunWrapper) error {
 
 func testCloneRead(config *util.LCMConfiguration) error {
   // Try to read from the clones directory to check read permissions
-  _, err := listDirectory(config.ClonesDirectory)
+  _, err := util.ListDirectory(config.ClonesDirectory)
   return err
 }
 

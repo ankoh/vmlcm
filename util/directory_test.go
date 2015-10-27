@@ -1,4 +1,4 @@
-package controller
+package util
 
 import (
 	"testing"
@@ -6,12 +6,12 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestClones(t *testing.T) {
+func TestDirectory(t *testing.T) {
 	Convey("Given a folder of sample configurations", t, func(context C) {
 		// $REPO/samples/config
 
-		Convey("listDirectory should return all files", func() {
-			files, err := listDirectory("../samples/config")
+		Convey("ListDirectory should return all files", func() {
+			files, err := ListDirectory("../samples/config")
 
 			So(err, ShouldBeNil)
 			So(files, ShouldNotBeNil)
@@ -24,8 +24,8 @@ func TestClones(t *testing.T) {
 			So(files[4], ShouldEqual, "valid1.json")
 		})
 
-		Convey("listDirectory should return folders", func() {
-			files, err := listDirectory("../samples")
+		Convey("ListDirectory should return folders", func() {
+			files, err := ListDirectory("../samples")
 
 			So(err, ShouldBeNil)
 			So(files, ShouldNotBeNil)

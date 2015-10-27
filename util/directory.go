@@ -1,14 +1,11 @@
-package controller
+package util
 
 import(
   "io/ioutil"
 )
 
-func generateIdentifier(address string) string {
-  return ""
-}
-
-func listDirectory(path string) ([]string, error) {
+// ListDirectory reads a directory and returns its contents
+func ListDirectory(path string) ([]string, error) {
   // First read the directory
   files, err := ioutil.ReadDir(path)
   if err != nil {

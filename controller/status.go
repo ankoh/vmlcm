@@ -108,21 +108,3 @@ func getRunningVMNumber(
 
   return number, nil
 }
-
-// getRunningVMPaths returns the paths of running VMs
-func getRunningVMPaths(
-  vmrun vmware.VmrunWrapper) ([]string, error) {
-  vmrunOut := vmrun.GetOutputChannel()
-  vmrunErr := vmrun.GetErrorChannel()
-  go vmrun.List()
-
-  var response string
-  select {
-    case response = <- vmrunOut:
-    case err := <- vmrunErr:
-      return nil, err
-  }
-
-  matches := listVMPaths.FindAllString(response, -1)
-  return matches, nil
-}
