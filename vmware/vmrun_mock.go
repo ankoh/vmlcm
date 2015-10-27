@@ -87,7 +87,12 @@ func (vmrun *MockVmrun) Unpause(vmx string) {
 
 // ListSnapshots lists the snapshots of a VM
 func (vmrun *MockVmrun) ListSnapshots(vmx string) {
-
+	buffer, err := ioutil.ReadFile("../samples/vmrun/listSnapshots.txt")
+	if err != nil {
+		vmrun.errorChannel <- err
+		return
+	}
+	vmrun.outputChannel <- string(buffer)
 }
 
 // Snapshot creates a snapshot of a VM
