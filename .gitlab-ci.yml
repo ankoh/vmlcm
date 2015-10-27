@@ -13,3 +13,16 @@ tests:
   tags:
     - golang
     - plain
+
+github:
+  type: deploy
+  script:
+    - mkdir -p ~/.ssh/
+    - echo "$GITHUB_DEPLOYMENT_KEY" > ~/.ssh/github.key
+    - printf "Host github\n    HostName github.com\n    User git\n    IdentityFile ~/.ssh/github.key\n" >> ~/.ssh/config
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - chmod 700 ~/.ssh/
+    - chmod 600 ~/.ssh/config
+    - chmod 600 ~/.ssh/github.key
+    - chmod 600 ~/.ssh/known_hosts
+    - git push --all ssh://github/ankoh/mendeley-cache-server.git
