@@ -47,7 +47,12 @@ func (vmrun *MockVmrun) Help() {
 
 // List lists all running vms
 func (vmrun *MockVmrun) List() {
-
+	buffer, err := ioutil.ReadFile("../samples/vmrun/list.txt")
+	if err != nil {
+		vmrun.errorChannel <- err
+		return
+	}
+	vmrun.outputChannel <- string(buffer)
 }
 
 // Start starts a VM

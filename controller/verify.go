@@ -117,8 +117,8 @@ func deleteTestFile(config *util.LCMConfiguration) error {
 }
 
 // Regular expressions
-var validMacRegEx, _ = regexp.Compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
-var absolutePathRegEx, _ = regexp.Compile("^/.*$")
+var validMacRegEx = regexp.MustCompile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
+var absolutePathRegEx = regexp.MustCompile("^/.*$")
 
 // Returns whether the given address is a valid mac address
 func isValidMacAddress(address string) bool {
@@ -166,8 +166,8 @@ func verifyConfigurationPaths(
 	logger.LogVerification("Verifying clones directroy", true)
 
   // Check if Clones directory is a trailing slash
-  matches, _ := regexp.MatchString(".*/$", config.ClonesDirectory)
-  if !matches {
+  matches, err := regexp.MatchString(".*/$", config.ClonesDirectory)
+  if err != nil || !matches {
     logger.LogVerification("Verifying directory trailing slash", false)
     return fmt.Errorf("The clones directory path must have a trailing slash")
   }
@@ -181,8 +181,8 @@ func verifyConfigurationPaths(
 	logger.LogVerification("Verifying template path", true)
 
 	// Check if the template path ends with vmx
-	matches, _ = regexp.MatchString(".*\\.vmx$", config.TemplatePath)
-	if !matches {
+	matches, err = regexp.MatchString(".*\\.vmx$", config.TemplatePath)
+	if err != nil || !matches {
 		logger.LogVerification("Verifying template extension", false)
 		return fmt.Errorf("The template path must end with '.vmx'")
 	}
