@@ -2,7 +2,6 @@ package controller
 
 import (
 	"testing"
-  "fmt"
   "io/ioutil"
   "os"
 
@@ -64,63 +63,54 @@ func TestVerification(t *testing.T) {
     config.ClonesDirectory = "/tmp/vmlcm/clones/"
     config.TemplatePath = "/tmp/vmlcm/test.vmx"
     config.Vmrun = "/tmp/vmlcm/vmrun"
+		config.Addresses = []string {
+			"a1:b1:c1:d1:e1:f1",
+			"a2:b2:c2:d2:e2:f2",
+		}
 
     // Success
-    fmt.Println()
-    fmt.Println()
-    err := Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err := Verify(logger, vmrun, config, true)
     So(err, ShouldBeNil)
-    fmt.Println()
+
+		// Adding invalid MAC address
+		config.Addresses = append(config.Addresses, "keine_valide_mac")
+    err = Verify(logger, vmrun, config, true)
+    So(err, ShouldNotBeNil)
 
     // Vmrun deletion
-    fmt.Println("\t-- Deleting vmrun executable")
+		config.Addresses = config.Addresses[:len(config.Addresses)-1]
     os.Remove("/tmp/vmlcm/vmrun")
-    err = Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err = Verify(logger, vmrun, config, true)
     So(err, ShouldNotBeNil)
-    fmt.Println()
 
     // Template deletion
-    fmt.Println("\t-- Restoring vmrun, deleting vmx template")
     createTestVmrun()
     os.Remove("/tmp/vmlcm/test.vmx")
-    err = Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err = Verify(logger, vmrun, config, true)
     So(err, ShouldNotBeNil)
-    fmt.Println()
 
     // Clones directory deletion
-    fmt.Println("\t-- Restoring template, deleting clones directory")
     createTestTemplate()
     os.Remove("/tmp/vmlcm/clones")
-    err = Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err = Verify(logger, vmrun, config, true)
     So(err, ShouldNotBeNil)
-    fmt.Println()
 
     // Invalid template file extension
-    fmt.Println("\t-- Restoring clones, adding invalid template")
     createTestFolders()
     os.Remove("/tmp/vmlcm/test.vmx")
     ioutil.WriteFile("/tmp/vmlcm/test", []byte(""), 0644)
     config.TemplatePath = "/tmp/vmlcm/test"
-    err = Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err = Verify(logger, vmrun, config, true)
     So(err, ShouldNotBeNil)
-    fmt.Println()
 
     // File as clone folder
-    fmt.Println("\t-- Restoring template, using file as clone folder")
     os.Remove("/tmp/vmlcm/test")
     createTestTemplate()
     config.TemplatePath = "/tmp/vmlcm/test.vmx"
     os.Remove("/tmp/vmlcm/clones")
     ioutil.WriteFile("/tmp/vmlcm/clones", []byte(""), 0644)
-    err = Verify(logger, vmrun, config, false)
-    fmt.Printf("\t%-55s", "")
+    err = Verify(logger, vmrun, config, true)
     So(err, ShouldNotBeNil)
-    fmt.Println()
   })
 }
 

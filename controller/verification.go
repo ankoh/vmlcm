@@ -27,38 +27,59 @@ func Verify(
     return err
   }
 
+	// Verify Mac addresses
+	err = testMacAddresses(config)
+	if err != nil {
+		logger.LogVerification("Verifying MAC addresses", false)
+		return err
+	}
+	logger.LogVerification("Verifying MAC addresses", true)
+
   // Test vmrun help
   err = testVmrunHelp(vmrun)
   if err != nil {
-    logger.LogVerification("Testing vmrun executable", false)
+    logger.LogVerification("Verifying vmrun executable", false)
     return err
   }
-  logger.LogVerification("Testing vmrun executable", true)
+  logger.LogVerification("Verifying vmrun executable", true)
 
   // Test clone read
   err = testCloneRead(config)
   if err != nil {
-    logger.LogVerification("Testing clone list", false)
+    logger.LogVerification("Verifying clone list", false)
     return err
   }
-  logger.LogVerification("Testing clone list", true)
+  logger.LogVerification("Verifying clone list", true)
 
   // Test clone write
   err = testCloneWrite(config)
   if err != nil {
-    logger.LogVerification("Testing clone write", false)
+    logger.LogVerification("Verifying clone write", false)
     return err
   }
-  logger.LogVerification("Testing clone write", true)
+  logger.LogVerification("Verifying clone write", true)
 
-  // Delete test file
-  err = deleteTestFile(config)
-  if err != nil {
-    logger.LogVerification("Deleting test file", false)
-    return err
-  }
-  logger.LogVerification("Deleting test file", true)
+
+	// Delete test file
+	err = deleteTestFile(config)
+	if err != nil {
+		logger.LogVerification("Deleting test file", false)
+		return err
+	}
+	logger.LogVerification("Deleting test file", true)
+
+
   return nil
+}
+
+func testMacAddresses(config *util.LCMConfiguration) error {
+	addresses := config.Addresses
+	for _, address := range addresses {
+		if !isValidMacAddress(address) {
+			return fmt.Errorf("Invalid Mac Address %s", address)
+		}
+	}
+	return nil
 }
 
 // Check if vmrun help returns <<some>> output (and not an error)
