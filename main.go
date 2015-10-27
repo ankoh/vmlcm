@@ -19,6 +19,4 @@ func main() {
 		fmt.Println(configError.Error())
 		return
 	}
-
-
 }

@@ -24,11 +24,18 @@ const (
 	// * Gathers information about the used template
 	StatusCommand
 
-	// UpCommand <number> ensures that the specified amount of clones is up
+	// UpCommand <number> ensures that the specified amount of clones is <<up>>
 	// * up 10 creates 10 if no clones are existing
 	// * up 10 creates 6 clones if 4 clones are existing
-	// * up 0 deletes all clones
+	// * up 0 creates 0 clones
 	UpCommand
+
+	// KeepCommand <number> keeps the number of clones and deletes the rest
+	// * keep 10 with 10 existing == noop
+	// * keep 10 with 4 clones existing == noop
+	// * keep 4 with 10 clones existing == delete 6 clones
+	// * keep 0 == delete all clones
+	KeepCommand
 
 	// ResetCommand resets all clones
 	// This is probably faster than up 0 -> up 10
@@ -87,6 +94,8 @@ func ParseArguments() (*LCMArguments, error) {
 		command = StatusCommand
 	case "up":
 		command = UpCommand
+	case "keep":
+		command = KeepCommand
 	case "reset":
 		command = ResetCommand
 	case "start":
@@ -103,14 +112,14 @@ func ParseArguments() (*LCMArguments, error) {
 	var commandParameter int
 
 	// If needed, check if command parameter has been provided
-	if command == UpCommand {
+	if command == UpCommand || command == KeepCommand {
 		if len(arguments) <= 1 {
-			err := fmt.Errorf("The command up requires a number parameter. (vmlcm -f ./agents.yml up 3)")
+			err := fmt.Errorf("The commands up and keep require a number parameter. (vmlcm -f ./agents.yml up 3)")
       return nil, err
 		}
 		param, err := strconv.Atoi(arguments[1])
 		if err != nil || param < 0 {
-			err := fmt.Errorf("%s is not a valid parameter for the 'up' command", arguments[1])
+			err := fmt.Errorf("%s is not a valid parameter for the commands 'up' and 'keep'", arguments[1])
       return nil, err
 		}
 		commandParameter = param
