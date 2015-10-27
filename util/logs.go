@@ -28,5 +28,5 @@ func (logger *Logger) LogVerification(message string, successful bool) {
 		status = "Ok"
 		statusColor = ColorCyan
 	}
-	fmt.Printf("%-50s [%s%s%s]\n", message, statusColor, status, ColorNone)
+	fmt.Printf("%-40s [%s%s%s]\n", message, statusColor, status, ColorNone)
 }
