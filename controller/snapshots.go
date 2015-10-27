@@ -10,6 +10,46 @@ import(
   "github.com/ankoh/vmlcm/vmware"
 )
 
+// prepareTemplateSnapshot returns the latest snapshot that was made with the prefix
+// if none is available, it creates a new one
+func prepareTemplateSnapshot(
+  vmrun vmware.VmrunWrapper,
+  config *util.LCMConfiguration) (string, error) {
+  snapshots, err := getTemplateSnapshots(vmrun, config)
+  if err != nil {
+    return "", err
+  }
+
+  // Check for the latest snapshot with the given prefix
+  foundSnapshot := ""
+  foundSnapshotTimestamp := -1
+  for _, snapshot := range snapshots {
+    parts := strings.Split(snapshot, "-")
+    if len(parts) != 2 {
+      continue
+    }
+    if parts[0] != config.Prefix {
+      continue
+    }
+    newTimestamp, err := strconv.Atoi(parts[1])
+    if err != nil {
+      continue
+    }
+    if newTimestamp > foundSnapshotTimestamp {
+      foundSnapshot = parts[0]
+      foundSnapshotTimestamp = newTimestamp
+    }
+  }
+  // Check if a snapshot has been found
+  if foundSnapshotTimestamp > 0 {
+    return fmt.Sprintf("%s-%d", foundSnapshot, foundSnapshotTimestamp), nil
+  }
+
+  // Otherwise create a new snapshot
+  return createTemplateSnapshot(vmrun, config)
+}
+
+
 // getRunningVMPaths returns the paths of running VMs
 func getTemplateSnapshots(
 	vmrun vmware.VmrunWrapper,
@@ -47,13 +87,11 @@ func getTemplateSnapshots(
 // createTemplateSnapshot creates a prefixed snapshot of the template
 func createTemplateSnapshot(
   vmrun vmware.VmrunWrapper,
-  config *util.LCMConfiguration,
-  withSpinner bool) error {
+  config *util.LCMConfiguration) (string, error) {
   timestamp := int(time.Now().Unix())
 
   // Create snapshot name
-  timestampString := strconv.Itoa(timestamp)
-  snapshotName := fmt.Sprintf("%s-%s", config.Prefix, timestampString)
+  snapshotName := fmt.Sprintf("%s-%d", config.Prefix, timestamp)
 
   vmrunOut := vmrun.GetOutputChannel()
 	vmrunErr := vmrun.GetErrorChannel()
@@ -62,7 +100,7 @@ func createTemplateSnapshot(
 	select {
 	case <-vmrunOut:
 	case err := <-vmrunErr:
-		return err
+		return "", err
 	}
-  return nil
+  return snapshotName, nil
 }

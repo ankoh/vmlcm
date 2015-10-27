@@ -31,7 +31,7 @@ func TestSnapshots(t *testing.T) {
 		})
 
     Convey("createTemplateSnapshot should be able to create a snapshot", func() {
-			err := createTemplateSnapshot(vmrun, config, false)
+			_, err := createTemplateSnapshot(vmrun, config)
 			So(err, ShouldBeNil)
 		})
   })
