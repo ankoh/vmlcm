@@ -27,5 +27,20 @@ func TestExecute(t *testing.T) {
 			}
 		})
 
+		Convey("List() should return running vms", func() {
+			outChannel := vmrun.GetOutputChannel()
+			errChannel := vmrun.GetErrorChannel()
+
+			go vmrun.List()
+
+			select {
+			case out := <-outChannel:
+				So(out, ShouldNotBeNil)
+        So(out, ShouldContainSubstring, "/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx")
+			case err := <-errChannel:
+				So(err, ShouldBeNil)
+			}
+		})
+
 	})
 }
