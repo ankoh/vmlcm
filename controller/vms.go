@@ -72,7 +72,7 @@ func getVMs(
 		// Otherwise create a new one
 		vm := new(virtualMachine)
 		vm.path = cloneDirectoryVM
-		vm.running = true
+		vm.running = false
 		vm.template = vm.path == templatePath
 		vm.clone = cloneRegEx.MatchString(cloneDirectoryVM)
 		vms[cloneDirectoryVM] = vm

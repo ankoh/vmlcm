@@ -53,10 +53,10 @@ func TestVerification(t *testing.T) {
 	Convey("Verify should successfully verify various configurations", t, func() {
 		logger := util.NewLogger()
 
-		createTestFolders()
-		createTestTemplate()
-		createTestVmrun()
-		defer deleteAll()
+		createTestVerifyFolders()
+		createTestVerifyTemplate()
+		createTestVerifyVmrun()
+		defer deleteTestVerifyFolders()
 
 		vmrun := vmware.NewMockVmrun()
 		config := new(util.LCMConfiguration)
@@ -84,19 +84,19 @@ func TestVerification(t *testing.T) {
 		So(err, ShouldNotBeNil)
 
 		// Template deletion
-		createTestVmrun()
+		createTestVerifyVmrun()
 		os.Remove("/tmp/vmlcmverify/test.vmx")
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// Clones directory deletion
-		createTestTemplate()
+		createTestVerifyTemplate()
 		os.Remove("/tmp/vmlcmverify/clones")
 		err = Verify(logger, vmrun, config, true)
 		So(err, ShouldNotBeNil)
 
 		// Invalid template file extension
-		createTestFolders()
+		createTestVerifyFolders()
 		os.Remove("/tmp/vmlcmverify/test.vmx")
 		ioutil.WriteFile("/tmp/vmlcmverify/test", []byte(""), 0644)
 		config.TemplatePath = "/tmp/vmlcmverify/test"
@@ -105,7 +105,7 @@ func TestVerification(t *testing.T) {
 
 		// File as clone folder
 		os.Remove("/tmp/vmlcmverify/test")
-		createTestTemplate()
+		createTestVerifyTemplate()
 		config.TemplatePath = "/tmp/vmlcmverify/test.vmx"
 		os.Remove("/tmp/vmlcmverify/clones")
 		ioutil.WriteFile("/tmp/vmlcmverify/clones", []byte(""), 0644)
@@ -114,21 +114,21 @@ func TestVerification(t *testing.T) {
 	})
 }
 
-func createTestFolders() {
+func createTestVerifyFolders() {
 	os.Mkdir("/tmp/vmlcmverify", 0755)
 	os.Mkdir("/tmp/vmlcmverify/clones", 0755)
 }
 
-func createTestTemplate() {
+func createTestVerifyTemplate() {
 	testBuffer := []byte("vmlcm test vmx\n")
 	ioutil.WriteFile("/tmp/vmlcmverify/test.vmx", testBuffer, 0644)
 }
 
-func createTestVmrun() {
+func createTestVerifyVmrun() {
 	testBuffer := []byte("vmlcm test vmrun\n")
 	ioutil.WriteFile("/tmp/vmlcmverify/vmrun", testBuffer, 0755)
 }
 
-func deleteAll() {
+func deleteTestVerifyFolders() {
 	os.RemoveAll("/tmp/vmlcmverify")
 }

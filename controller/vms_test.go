@@ -33,8 +33,8 @@ func TestVMs(t *testing.T) {
 		})
 
 		Convey("discoverVMsInDirectory should be able to discover vmx files in a directory", func() {
-			createTestVmwareFolder()
-			defer deleteTestVmwareFolder()
+			createTestVMsVmwareFolder()
+			defer deleteTestVMsVmwareFolder()
 
 			result, err := discoverVMs("/tmp/vmlcmvms/")
 
@@ -47,7 +47,7 @@ func TestVMs(t *testing.T) {
 	})
 }
 
-func createTestVmwareFolder() {
+func createTestVMsVmwareFolder() {
   os.Mkdir("/tmp/vmlcmvms/", 0755)
 	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm", 0755)
 	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm/test1.vmx", 0755)
@@ -55,6 +55,6 @@ func createTestVmwareFolder() {
 	os.Mkdir("/tmp/vmlcmvms/test2.vmwarevm/test2.vmx", 0755)
 }
 
-func deleteTestVmwareFolder() {
+func deleteTestVMsVmwareFolder() {
 	os.RemoveAll("/tmp/vmlcmvms/")
 }
