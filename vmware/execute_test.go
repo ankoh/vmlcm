@@ -9,7 +9,7 @@ func TestExecute(t *testing.T) {
   Convey("Given a standard UNIX environment", t, func(context C) {
     // Should be the case...
 
-    Convey("executeCommand must be able to execute 'ls -la ./'", func() {
+    Convey("executeCommand should be able to execute 'ls -la ./'", func() {
       outChan := make(chan string)
       errChan := make(chan error)
       defer close(outChan)
@@ -26,7 +26,7 @@ func TestExecute(t *testing.T) {
       }
     })
 
-		Convey("executeCommand must throw an error when executing 'notexistingcommand -foo -bar 42'", func() {
+		Convey("executeCommand should throw an error when executing 'notexistingcommand -foo -bar 42'", func() {
 			outChan := make(chan string)
 			errChan := make(chan error)
 			defer close(outChan)

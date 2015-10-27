@@ -10,7 +10,7 @@ func TestClones(t *testing.T) {
 	Convey("Given a folder of sample configurations", t, func(context C) {
 		// $REPO/samples/config
 
-		Convey("listDirectory must return all files", func() {
+		Convey("listDirectory should return all files", func() {
 			files, err := listDirectory("../samples/config")
 
 			So(err, ShouldBeNil)
@@ -24,7 +24,7 @@ func TestClones(t *testing.T) {
 			So(files[4], ShouldEqual, "valid1.json")
 		})
 
-		Convey("listDirectory must return folders", func() {
+		Convey("listDirectory should return folders", func() {
 			files, err := listDirectory("../samples")
 
 			So(err, ShouldBeNil)

@@ -8,7 +8,7 @@ import (
 
 func TestConfig(t *testing.T) {
   Convey("Given various test files", t, func() {
-    Convey("valid test files must be parsed correctly", func() {
+    Convey("valid test files should be parsed correctly", func() {
       config1, err1 := util.ParseConfiguration("../samples/config/valid1.json")
       So(err1, ShouldBeNil)
       So(config1.Vmrun, ShouldEqual, "/Applications/VMware Fusion.app/Contents/Library/vmrun")
@@ -17,7 +17,7 @@ func TestConfig(t *testing.T) {
       So(len(config1.Addresses), ShouldEqual, 9)
     })
 
-    Convey("invalid test files must result in an error", func() {
+    Convey("invalid test files should result in an error", func() {
       config1, err1 := util.ParseConfiguration("../samples/config/invalid1.json")
       So(err1, ShouldNotBeNil)
       So(config1, ShouldBeNil)
@@ -32,7 +32,7 @@ func TestConfig(t *testing.T) {
       So(config4, ShouldBeNil)
     })
 
-    Convey("not existing file must result in an error", func() {
+    Convey("not existing file should result in an error", func() {
       config, err := util.ParseConfiguration("/path/not/exsting/hopefully")
       So(err, ShouldNotBeNil)
       So(config, ShouldBeNil)

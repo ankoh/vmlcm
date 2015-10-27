@@ -12,7 +12,7 @@ func TestExecute(t *testing.T) {
 		vmrun := vmware.NewMockVmrun()
 		defer vmrun.Close()
 
-		Convey("Help() must return usage information and the version number", func() {
+		Convey("Help() should return usage information and the version number", func() {
 			outChannel := vmrun.GetOutputChannel()
 			errChannel := vmrun.GetErrorChannel()
 

@@ -12,7 +12,7 @@ func TestArguments(t *testing.T) {
 	Convey("Given a clean command line environment", t, func() {
     flag.CommandLine = flag.NewFlagSet("vmlcm", flag.ContinueOnError)
 
-		Convey("whitespace flags must be parsed correctly", func() {
+		Convey("whitespace flags should be parsed correctly", func() {
       os.Args = []string{
         "vmlcm",
         "-f", "./agents.json",
@@ -26,7 +26,7 @@ func TestArguments(t *testing.T) {
       So(args.Command, ShouldEqual, util.VerifyCommand)
 		})
 
-    Convey("non-whitespace flags must be parsed correctly", func() {
+    Convey("non-whitespace flags should be parsed correctly", func() {
       os.Args = []string{
         "vmlcm",
         "-f=./agents.json",
@@ -41,7 +41,7 @@ func TestArguments(t *testing.T) {
       So(args.CommandParameter, ShouldEqual, 3)
 		})
 
-    Convey("no arguments must result in an error", func() {
+    Convey("no arguments should result in an error", func() {
       os.Args = []string{ "vmlcm" }
 
       args, err := util.ParseArguments()
