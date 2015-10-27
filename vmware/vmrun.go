@@ -35,10 +35,11 @@ type CLIVmrun struct {
 }
 
 // NewCLIVmrun returns a new CLIVmrun object
-func NewCLIVmrun() *CLIVmrun {
+func NewCLIVmrun(vmrunPath string) *CLIVmrun {
 	vmrun := new(CLIVmrun)
 	vmrun.outputChannel = make(chan string)
 	vmrun.errorChannel = make(chan error)
+	vmrun.vmrunPath = vmrunPath
 	return vmrun
 }
 

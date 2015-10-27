@@ -59,9 +59,10 @@ const (
 
 // LCMArguments stores the options that have been passed to vmlcm
 type LCMArguments struct {
-	ConfigPath       *string    // vmlcm {-f agents.yml} --up 3
-	Command          LCMCommand // vmlcm -f agents.yml {-up} 3
-	CommandParameter int        // vmlcm -f agents.yml --up {3}
+	ConfigPath       *string    // vmlcm {-f agents.yml} up 3
+	Command          LCMCommand // vmlcm -f agents.yml {up} 3
+	CommandParameter int        // vmlcm -f agents.yml up {3}
+	Test						 bool				// vmlcm -test -f agents.yml verify
 }
 
 // ParseArguments parses the provided command line flags & aguments
