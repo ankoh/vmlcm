@@ -84,14 +84,10 @@ func testMacAddresses(config *util.LCMConfiguration) error {
 
 // Check if vmrun help returns <<some>> output (and not an error)
 func testVmrunHelp(vmrun vmware.VmrunWrapper) error {
-  vmrunOut := vmrun.GetOutputChannel()
-  vmrunErr := vmrun.GetErrorChannel()
-  go vmrun.Help()
-  select {
-    case <- vmrunOut:
-    case err := <- vmrunErr:
-      return err
-  }
+	_, err := getRunningVMNumber(vmrun)
+	if err != nil {
+		return err
+	}
   return nil
 }
 

@@ -65,9 +65,8 @@ func (vmrun *CLIVmrun) Help() {
 	vmrun.vmrunMutex.Lock()
 	defer vmrun.vmrunMutex.Unlock()
 
-	executeCommand(
+	forceExecuteCommand(
 		vmrun.outputChannel,
-		vmrun.errorChannel,
 		vmrun.vmrunPath,
 		"-T", "fusion")
 }
