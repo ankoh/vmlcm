@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"testing"
 	"os"
+	"testing"
 
-	"github.com/ankoh/vmlcm/vmware"
 	"github.com/ankoh/vmlcm/util"
+	"github.com/ankoh/vmlcm/vmware"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -33,7 +33,7 @@ func TestStatus(t *testing.T) {
 
 			// Create configurations
 			config := new(util.LCMConfiguration)
-			config.Addresses = []string {
+			config.Addresses = []string{
 				"a1b1c1d1e1f1",
 				"a2b2c2d2e2f2",
 				"a3b3c3d3e3f3",
@@ -61,7 +61,7 @@ func TestStatus(t *testing.T) {
 			}
 
 			// First check all running vms
-			runningPaths := []string {
+			runningPaths := []string{
 				"/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx",
 				"/Volumes/VM_SB3/VMware/dockerbruegge1.vmwarevm/dockerbruegge1.vmx",
 				"/Volumes/VM_SB3/VMware/repoarchbruegge.vmwarevm/repoarchbruegge.vmx",
@@ -89,7 +89,7 @@ func TestStatus(t *testing.T) {
 			}
 
 			// Then check all clones
-			clonePaths := []string {
+			clonePaths := []string{
 				"/tmp/vmlcmstatus/pom2015-a1b1c1d1e1f1.vmwarevm/pom2015-a1b1c1d1e1f1.vmx",
 				"/tmp/vmlcmstatus/pom2015-a2b2c2d2e2f2.vmwarevm/pom2015-a2b2c2d2e2f2.vmx",
 				"/tmp/vmlcmstatus/pom2015-a3b3c3d3e3f3.vmwarevm/pom2015-a3b3c3d3e3f3.vmx",

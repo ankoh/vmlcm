@@ -1,10 +1,10 @@
 package util
 
 import (
-  "regexp"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 // LCMConfiguration holds the configuration for the linked clones manager
@@ -16,10 +16,8 @@ type LCMConfiguration struct {
 	ClonesDirectory string
 	TemplatePath    string
 	Addresses       []string
-  Prefix          string
+	Prefix          string
 }
-
-var validPrefix = regexp.MustCompile("^[A-Za-z0-9]+$")
 
 // ParseConfiguration uses a string path to a json file
 func ParseConfiguration(path string) (*LCMConfiguration, error) {
@@ -52,10 +50,15 @@ func ParseConfiguration(path string) (*LCMConfiguration, error) {
 		err := fmt.Errorf("The configuration file does not contain a valid parameter 'TemplatePath'")
 		return nil, err
 	}
-  if !validPrefix.MatchString(config.Prefix) {
-    err := fmt.Errorf("The configuration file does not contain a parameter 'Prefix' that matches the RegEx /^[A-Za-z0-9]+$/")
-    return nil, err
-  }
+	if len(config.Prefix) == 0 {
+		err := fmt.Errorf("The configuration file does not contain a valid parameter 'Prefix'")
+		return nil, err
+	}
+
+	// Uppercase all addresses
+	for i, address := range config.Addresses {
+		config.Addresses[i] = strings.ToUpper(address)
+	}
 
 	// If Unmarshal was successfull we're done
 	return &config, nil

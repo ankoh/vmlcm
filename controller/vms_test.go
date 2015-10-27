@@ -48,7 +48,7 @@ func TestVMs(t *testing.T) {
 }
 
 func createTestVMsVmwareFolder() {
-  os.Mkdir("/tmp/vmlcmvms/", 0755)
+	os.Mkdir("/tmp/vmlcmvms/", 0755)
 	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm", 0755)
 	os.Mkdir("/tmp/vmlcmvms/test1.vmwarevm/test1.vmx", 0755)
 	os.Mkdir("/tmp/vmlcmvms/test2.vmwarevm", 0755)

@@ -7,7 +7,7 @@ const ColorNone = "\x1b[0m"
 const ColorBlack = "\x1b[30m"
 
 // ColorRed ANSI Color Red
-const ColorRed = "\x1b[31m'"
+const ColorRed = "\x1b[31m"
 
 // ColorGreen ANSI Color Green
 const ColorGreen = "\x1b[32m"

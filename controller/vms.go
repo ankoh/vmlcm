@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	//  "strconv"
-  "strings"
+	"strings"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -23,12 +23,12 @@ func getVMs(
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration) ([]*virtualMachine, error) {
 
-  prefix := strings.ToLower(config.Prefix)
-  cloneRegExString := fmt.Sprintf(".*/%s\\-[A-Fa-f0-9]+\\.vmwarevm/%s\\-[A-Fa-f0-9]+\\.vmx$", prefix, prefix)
-  cloneRegEx, err := regexp.Compile(cloneRegExString)
-  if err != nil {
-    return nil, fmt.Errorf("Could not compile Clone RegEx with Prefix %s", config.Prefix)
-  }
+	prefix := strings.ToLower(config.Prefix)
+	cloneRegExString := fmt.Sprintf(".*/%s\\-[A-Fa-f0-9]+\\.vmwarevm/%s\\-[A-Fa-f0-9]+\\.vmx$", prefix, prefix)
+	cloneRegEx, err := regexp.Compile(cloneRegExString)
+	if err != nil {
+		return nil, fmt.Errorf("Could not compile Clone RegEx with Prefix %s", config.Prefix)
+	}
 
 	clonesDirectoryPath := config.ClonesDirectory
 	templatePath := config.TemplatePath

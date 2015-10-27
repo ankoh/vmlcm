@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -22,30 +23,81 @@ func Status(
 		return err
 	}
 	// Fetch running vms number
-	runningVms, err := getRunningVMNumber(vmrun)
+	_, err = getRunningVMNumber(vmrun)
 	if err != nil {
 		return err
+	}
+
+	// Fetch all vms that can be discovered easily (clone folder && running)
+	vms, err := getVMs(vmrun, config)
+	if err != nil {
+		return err
+	}
+
+	// build clones Array
+	var clones []*virtualMachine
+	var running []*virtualMachine
+	var template *virtualMachine
+	for _, vm := range vms {
+		if vm.clone {
+			clones = append(clones, vm)
+		}
+		if vm.template {
+			template = vm
+		}
+		if vm.running {
+			running = append(running, vm)
+		}
 	}
 
 	// Print report
 	if !silent {
 		printHeader()
 		fmt.Println()
-		fmt.Printf("%-25s %s%s%s\n", "Vmrun version", util.ColorCyan, version.version, util.ColorNone)
-		fmt.Printf("%-25s %s%s%s\n", "Vmrun build", util.ColorCyan, version.build, util.ColorNone)
-		fmt.Printf("%-25s %s%d%s\n", "Running VMs", util.ColorCyan, runningVms, util.ColorNone)
+		fmt.Printf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone)
+		fmt.Printf("%-20s %s\n", "Vmrun version", version.version)
+		fmt.Printf("%-20s %s\n", "Vmrun build", version.build)
+		fmt.Println()
+		fmt.Printf("%-20s %s%s%s\n", "Prefix", util.ColorCyan, config.Prefix, util.ColorNone)
+		fmt.Printf("%-20s %s%s%s\n", "Template path", util.ColorCyan, config.TemplatePath, util.ColorNone)
+		if template.running {
+			fmt.Printf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Online", util.ColorNone)
+		} else {
+			fmt.Printf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Offline", util.ColorNone)
+		}
+		fmt.Println("MAC addresses")
+		for _, address := range config.Addresses {
+			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, address, util.ColorNone)
+		}
+		fmt.Println()
+		fmt.Printf("%-20s %s%s%s\n", "Clones directory", util.ColorCyan, config.ClonesDirectory, util.ColorNone)
+		fmt.Printf("%-20s %s%d%s\n", "Linked clones", util.ColorNone, len(clones), util.ColorNone)
+		fmt.Println()
+		if len(clones) == 0 {
+			fmt.Printf("  No clones available")
+		} else {
+			for _, clone := range clones {
+				if !clone.running {
+					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
+					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorCyan, "Online", util.ColorNone)
+				} else {
+					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
+					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorRed, "Offline", util.ColorNone)
+				}
+			}
+		}
 		fmt.Println()
 	}
 	return nil
 }
 
 func printHeader() {
-	fmt.Println("                  __              ")
-	fmt.Println(" _   ______ ___  / /___ ___  _____")
-	fmt.Println("| | / / __ `__ \\/ / __ `__ \\/ ___/")
-	fmt.Println("| |/ / / / / / / / / / / / / /__  ")
-	fmt.Println("|___/_/ /_/ /_/_/_/ /_/ /_/\\___/  ")
-	fmt.Println("                                  ")
+	fmt.Println("                    __              ")
+	fmt.Println("   _   ______ ___  / /___ ___  _____")
+	fmt.Println("  | | / / __ `__ \\/ / __ `__ \\/ ___/")
+	fmt.Println("  | |/ / / / / / / / / / / / / /__  ")
+	fmt.Println("  |___/_/ /_/ /_/_/_/ /_/ /_/\\___/  ")
+	fmt.Println("                                    ")
 }
 
 var helpVmrunVersion = regexp.MustCompile("vmrun version (\\d+\\.\\d+\\.\\d+) build-(\\d+)")

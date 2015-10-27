@@ -10,6 +10,8 @@ import (
 	"github.com/ankoh/vmlcm/vmware"
 )
 
+var validPrefix = regexp.MustCompile("^[A-Za-z0-9]+$")
+
 // Verify verifies the provided settings
 func Verify(
 	logger *util.Logger,
@@ -26,6 +28,14 @@ func Verify(
 	if err != nil {
 		return err
 	}
+
+	// Verify Prefix
+	ok := validPrefix.MatchString(config.Prefix)
+	if !ok {
+		logger.LogVerification("Verifying prefix", false)
+		return fmt.Errorf("Prefix must match the RegEx /^[A-Za-z0-9]+$/")
+	}
+	logger.LogVerification("Verifying prefix", true)
 
 	// Verify Mac addresses
 	err = testMacAddresses(config)
