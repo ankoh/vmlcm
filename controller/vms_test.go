@@ -16,7 +16,7 @@ func TestVMs(t *testing.T) {
 			result, err := getRunningVMPaths(vmrun)
 
 			So(err, ShouldBeNil)
-			So(len(result), ShouldEqual, 13)
+			So(len(result), ShouldEqual, 16)
 			So(result[0], ShouldEqual, "/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx")
 			So(result[1], ShouldEqual, "/Volumes/VM_SB3/VMware/dockerbruegge1.vmwarevm/dockerbruegge1.vmx")
 			So(result[2], ShouldEqual, "/Volumes/VM_SB3/VMware/repoarchbruegge.vmwarevm/repoarchbruegge.vmx")

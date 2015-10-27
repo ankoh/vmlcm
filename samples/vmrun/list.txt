@@ -12,3 +12,6 @@ Total running VMs: 13
 /Volumes/VM_SB3/VMware/mailbruegge.vmwarevm/mailbruegge.vmx
 /Volumes/VM_SB3/VMware/webbruegge_prelive.vmwarevm/webbruegge_prelive.vmx
 /Volumes/VM_SB3/VMware/monitorbruegge.vmwarevm/monitorbruegge.vmx
+/tmp/vmlcmstatus/pom2015-a1b1c1d1e1f1.vmwarevm/pom2015-a1b1c1d1e1f1.vmx
+/tmp/vmlcmstatus/pom2015-a2b2c2d2e2f2.vmwarevm/pom2015-a2b2c2d2e2f2.vmx
+/tmp/vmlcmstatus/pom2015-a3b3c3d3e3f3.vmwarevm/pom2015-a3b3c3d3e3f3.vmx
