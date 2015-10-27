@@ -38,7 +38,10 @@ func main() {
 				fmt.Println(err.Error())
 			}
 		case util.StatusCommand:
-			fmt.Println("Not implemented yet")
+			err := controller.Status(logger, vmrun, config, false)
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 		case util.UpCommand:
 			fmt.Println("Not implemented yet")
 		case util.KeepCommand:

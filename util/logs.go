@@ -26,7 +26,7 @@ func (logger *Logger) LogVerification(message string, successful bool) {
 	var statusColor = ColorRed
 	if successful {
 		status = "Ok"
-		statusColor = ColorGreen
+		statusColor = ColorCyan
 	}
 	fmt.Printf("%-50s [%s%s%s]\n", message, statusColor, status, ColorNone)
 }

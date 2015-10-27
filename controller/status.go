@@ -5,8 +5,49 @@ import (
   "fmt"
   "strconv"
 
+  "github.com/ankoh/vmlcm/util"
   "github.com/ankoh/vmlcm/vmware"
 )
+
+// Status returns the VMLCM status
+func Status(
+  logger *util.Logger,
+  vmrun vmware.VmrunWrapper,
+  config *util.LCMConfiguration,
+  silent bool) error {
+
+  // Fetch vmrun version
+  version, err := getVmrunVersion(vmrun)
+  if err != nil {
+    return err
+  }
+  // Fetch running vms number
+  runningVms, err := getRunningVMNumber(vmrun)
+  if err != nil {
+    return err
+  }
+
+  // Print report
+  if !silent {
+    printHeader()
+    fmt.Println()
+    fmt.Printf("%-25s %s%s%s\n", "Vmrun version", util.ColorCyan, version.version, util.ColorNone)
+    fmt.Printf("%-25s %s%s%s\n", "Vmrun build", util.ColorCyan, version.build, util.ColorNone)
+    fmt.Printf("%-25s %s%d%s\n", "Running VMs", util.ColorCyan, runningVms, util.ColorNone)
+    fmt.Println()
+  }
+  return nil
+}
+
+func printHeader() {
+  fmt.Println("                  __              ")
+  fmt.Println(" _   ______ ___  / /___ ___  _____")
+  fmt.Println("| | / / __ `__ \\/ / __ `__ \\/ ___/")
+  fmt.Println("| |/ / / / / / / / / / / / / /__  ")
+  fmt.Println("|___/_/ /_/ /_/_/_/ /_/ /_/\\___/  ")
+  fmt.Println("                                  ")
+}
+
 
 var helpVmrunVersion = regexp.MustCompile("vmrun version (\\d+\\.\\d+\\.\\d+) build-(\\d+)")
 var listVMNumber = regexp.MustCompile("Total running VMs: (\\d+)")
