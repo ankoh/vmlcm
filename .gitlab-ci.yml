@@ -1,14 +1,12 @@
-before_script:
-  - mkdir -p /workspace/src/github.com/ankoh/vmlcm
-  - cp -r ./* /workspace/src/github.com/ankoh/vmlcm
-  - cd /workspace/src/github.com/ankoh/vmlcm
-  - export GOPATH=/workspace
-  - go get -d -t -v ./...
-  - go install -v
-
 tests:
   type: test
   script:
+    - mkdir -p /workspace/src/github.com/ankoh/vmlcm
+    - cp -r ./* /workspace/src/github.com/ankoh/vmlcm
+    - cd /workspace/src/github.com/ankoh/vmlcm
+    - export GOPATH=/workspace
+    - go get -d -t -v ./...
+    - go install -v
     - go test -v -cover ./...
   tags:
     - golang
