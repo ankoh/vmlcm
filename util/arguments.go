@@ -59,13 +59,13 @@ func ParseArguments() (*LCMArguments, error) {
 
 	// Check if the flag has been provided
 	if len(*configPath) == 0 {
-		err := fmt.Errorf("You need to provide a valid path of the configuration file.")
+		err := fmt.Errorf("You need to provide a configuration file with '-f'.")
 		return nil, err
 	}
 
 	// Check if any argument has been provided
 	if len(arguments) == 0 {
-		err := fmt.Errorf("You have to provide one of the arguments {verify, status, reset, start, stop, suspend, up <number>}.")
+		err := fmt.Errorf("You have to provide one of these arguments: verify, status, start, stop,  use <number>")
 		return nil, err
 	}
 

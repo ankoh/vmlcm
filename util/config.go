@@ -24,7 +24,7 @@ func ParseConfiguration(path string) (*LCMConfiguration, error) {
 	// First read the file
 	fileString, fileError := ioutil.ReadFile(path)
 	if fileError != nil {
-		err := fmt.Errorf("Failed to read the file at path %s.\nError:\n%s", path, fileError.Error())
+		err := fmt.Errorf("Failed to read the file at path %s.", path)
 		return nil, err
 	}
 
@@ -32,7 +32,7 @@ func ParseConfiguration(path string) (*LCMConfiguration, error) {
 	var config LCMConfiguration
 	jsonError := json.Unmarshal([]byte(fileString), &config)
 	if jsonError != nil {
-		err := fmt.Errorf("Failed to parse the json configuration at path %s.\nError:\n%s", path, jsonError.Error())
+		err := fmt.Errorf("Failed to parse the json configuration at path %s.", path)
 		return nil, err
 	}
 
