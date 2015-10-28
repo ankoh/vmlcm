@@ -17,12 +17,12 @@ func VMIDToMacAddress(vmID string) (string, error) {
 	if len(vmID) != 12 {
 		return "", fmt.Errorf("Invalid length of Virtual Machine ID")
 	}
-	one := vmID[0:1]
-	two := vmID[2:3]
-	three := vmID[4:5]
-	four := vmID[6:7]
-	fife := vmID[8:9]
-	six := vmID[10:11]
+	one := vmID[0:2]
+	two := vmID[2:4]
+	three := vmID[4:6]
+	four := vmID[6:8]
+	fife := vmID[8:10]
+	six := vmID[10:12]
 	all := []string{
 		one,
 		two,
@@ -40,5 +40,6 @@ func VMNameToMacAddress(vmName string) (string, error) {
 	if len(splitted) != 2 {
 		return "", fmt.Errorf("Invalid format of Virtual Machine length")
 	}
+	splitted[1] = strings.TrimSuffix(splitted[1], ".vmx")
 	return VMIDToMacAddress(splitted[1])
 }
