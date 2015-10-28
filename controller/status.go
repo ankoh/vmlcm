@@ -77,10 +77,16 @@ func Status(
 		for _, snapshot := range snapshots {
 			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, snapshot, util.ColorNone)
 		}
+		if len(snapshots) == 0 {
+			fmt.Printf("%-20s %s\n", "", "No snapshots existing\n")
+		}
 		fmt.Println()
 		fmt.Println("MAC addresses")
 		for _, address := range config.Addresses {
 			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, address, util.ColorNone)
+		}
+		if len(config.Addresses) == 0 {
+			fmt.Printf("%-20s %s\n", "", "No addresses existing\n")
 		}
 		fmt.Println()
 		fmt.Printf("%-20s %s%s%s\n", "Clones directory", util.ColorCyan, config.ClonesDirectory, util.ColorNone)
