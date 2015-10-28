@@ -5,7 +5,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
 )
@@ -15,6 +17,14 @@ func Status(
 	logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration) error {
+
+	// Loading spinner
+	var loadingSpinner *spinner.Spinner
+	if !logger.Silent {
+		loadingSpinner = spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+		loadingSpinner.Start()
+	}
+
 
 	// Fetch vmrun version
 	version, err := getVmrunVersion(vmrun)
@@ -52,6 +62,8 @@ func Status(
 
 	// Print report
 	if !logger.Silent {
+		loadingSpinner.Stop()
+
 		util.PrintASCIIHeader()
 		fmt.Println()
 		fmt.Printf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone)
