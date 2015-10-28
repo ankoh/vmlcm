@@ -25,6 +25,7 @@ func main() {
 
 	// Create logger
 	logger := util.NewLogger()
+	logger.Silent = false
 
 	// Create vmrun wrapper
 	var vmrun vmware.VmrunWrapper
@@ -33,12 +34,12 @@ func main() {
 	// Switch commands
 	switch args.Command {
 	case util.VerifyCommand:
-		err := controller.Verify(logger, vmrun, config, false)
+		err := controller.Verify(logger, vmrun, config)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 	case util.StatusCommand:
-		err := controller.Status(logger, vmrun, config, false)
+		err := controller.Status(logger, vmrun, config)
 		if err != nil {
 			fmt.Println(err.Error())
 		}

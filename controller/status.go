@@ -14,8 +14,7 @@ import (
 func Status(
 	logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
-	config *util.LCMConfiguration,
-	silent bool) error {
+	config *util.LCMConfiguration) error {
 
 	// Fetch vmrun version
 	version, err := getVmrunVersion(vmrun)
@@ -53,7 +52,7 @@ func Status(
 
 
 	// Print report
-	if !silent {
+	if !logger.Silent {
 		util.PrintASCIIHeader()
 		fmt.Println()
 		fmt.Printf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone)

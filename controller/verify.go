@@ -16,12 +16,7 @@ var validPrefix = regexp.MustCompile("^[A-Za-z0-9]+$")
 func Verify(
 	logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
-	config *util.LCMConfiguration,
-	silent bool) error {
-	// Disable logger if not verbose
-	var loggerSilent = logger.Silent
-	logger.Silent = silent
-	defer func() { logger.Silent = loggerSilent }()
+	config *util.LCMConfiguration) error {
 
 	// First check the paths
 	err := verifyConfigurationPaths(logger, config)

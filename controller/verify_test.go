@@ -52,6 +52,7 @@ func TestVerification(t *testing.T) {
 
 	Convey("Verify should successfully verify various configurations", t, func() {
 		logger := util.NewLogger()
+		logger.Silent = true
 
 		createTestVerifyFolders()
 		createTestVerifyTemplate()
@@ -70,30 +71,30 @@ func TestVerification(t *testing.T) {
 		}
 
 		// Success
-		err := Verify(logger, vmrun, config, true)
+		err := Verify(logger, vmrun, config)
 		So(err, ShouldBeNil)
 
 		// Adding invalid MAC address
 		config.Addresses = append(config.Addresses, "keine_valide_mac")
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 
 		// Vmrun deletion
 		config.Addresses = config.Addresses[:len(config.Addresses)-1]
 		os.Remove("/tmp/vmlcmverify/vmrun")
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 
 		// Template deletion
 		createTestVerifyVmrun()
 		os.Remove("/tmp/vmlcmverify/test.vmx")
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 
 		// Clones directory deletion
 		createTestVerifyTemplate()
 		os.Remove("/tmp/vmlcmverify/clones")
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 
 		// Invalid template file extension
@@ -101,7 +102,7 @@ func TestVerification(t *testing.T) {
 		os.Remove("/tmp/vmlcmverify/test.vmx")
 		ioutil.WriteFile("/tmp/vmlcmverify/test", []byte(""), 0644)
 		config.TemplatePath = "/tmp/vmlcmverify/test"
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 
 		// File as clone folder
@@ -110,7 +111,7 @@ func TestVerification(t *testing.T) {
 		config.TemplatePath = "/tmp/vmlcmverify/test.vmx"
 		os.Remove("/tmp/vmlcmverify/clones")
 		ioutil.WriteFile("/tmp/vmlcmverify/clones", []byte(""), 0644)
-		err = Verify(logger, vmrun, config, true)
+		err = Verify(logger, vmrun, config)
 		So(err, ShouldNotBeNil)
 	})
 }
