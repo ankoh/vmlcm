@@ -6,6 +6,8 @@ import (
 	"github.com/ankoh/vmlcm/controller"
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
+	"github.com/briandowns/spinner"
+	"time"
 )
 
 func main() {
@@ -26,6 +28,7 @@ func main() {
 	// Create logger
 	logger := util.NewLogger()
 	logger.Silent = false
+	spinner := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 
 	// Create vmrun wrapper
 	var vmrun vmware.VmrunWrapper
@@ -39,7 +42,13 @@ func main() {
 			fmt.Println(err.Error())
 		}
 	case util.StatusCommand:
-		err := controller.Status(logger, vmrun, config)
+		spinner.Start()
+		if verify(logger, vmrun, config) != nil {
+			spinner.Stop()
+			return
+		}
+
+		err := controller.Status(logger, vmrun, config, spinner)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
@@ -50,4 +59,17 @@ func main() {
 	case util.StopCommand:
 		fmt.Println("Not implemented yet")
 	}
+}
+
+func verify(
+	logger *util.Logger,
+	vmrun vmware.VmrunWrapper,
+	config *util.LCMConfiguration) error {
+	logger.Silent = true
+	err := controller.Verify(logger, vmrun, config)
+	logger.Silent = false
+	if err != nil {
+		fmt.Println("Failed to verify settings. Please run 'verify' to get more details")
+	}
+	return err
 }
