@@ -45,6 +45,13 @@ func Status(
 		}
 	}
 
+	// get template snapshots
+	snapshots, err := getTemplateSnapshots(vmrun, config)
+	if err != nil {
+		return err
+	}
+
+
 	// Print report
 	if !silent {
 		util.PrintASCIIHeader()
@@ -60,6 +67,11 @@ func Status(
 		} else {
 			fmt.Printf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Offline", util.ColorNone)
 		}
+		fmt.Println("Template snapshots")
+		for _, snapshot := range snapshots {
+			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, snapshot, util.ColorNone)
+		}
+		fmt.Println()
 		fmt.Println("MAC addresses")
 		for _, address := range config.Addresses {
 			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, address, util.ColorNone)
