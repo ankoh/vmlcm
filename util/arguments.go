@@ -44,10 +44,10 @@ const (
 
 // LCMArguments stores the options that have been passed to vmlcm
 type LCMArguments struct {
-	ConfigPath       *string    // vmlcm {-f agents.yml} up 3
-	Command          LCMCommand // vmlcm -f agents.yml {up} 3
+	ConfigPath          *string    // vmlcm {-f agents.yml} up 3
+	Command             LCMCommand // vmlcm -f agents.yml {up} 3
 	CommandIntParameter int        // vmlcm -f agents.yml up {3}
-	Test             bool       // vmlcm -test -f agents.yml verify
+	Test                bool       // vmlcm -test -f agents.yml verify
 }
 
 // ParseArguments parses the provided command line flags & aguments
@@ -106,8 +106,8 @@ func ParseArguments() (*LCMArguments, error) {
 	}
 
 	parameter := &LCMArguments{
-		ConfigPath:       configPath,
-		Command:          command,
+		ConfigPath:          configPath,
+		Command:             command,
 		CommandIntParameter: commandParameter}
 
 	return parameter, nil

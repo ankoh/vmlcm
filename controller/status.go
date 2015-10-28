@@ -50,7 +50,6 @@ func Status(
 		return err
 	}
 
-
 	// Print report
 	if !logger.Silent {
 		util.PrintASCIIHeader()
@@ -109,18 +108,12 @@ type vmrunVersion struct {
 // getVmrunVersion returns version information of the used vmrun executable
 func getVmrunVersion(
 	vmrun vmware.VmrunWrapper) (*vmrunVersion, error) {
-	vmrunOut := vmrun.GetOutputChannel()
-	vmrunErr := vmrun.GetErrorChannel()
-	go vmrun.Help()
-
-	var response string
-	select {
-	case response = <-vmrunOut:
-	case err := <-vmrunErr:
+	help, err := vmrun.Help()
+	if err != nil {
 		return nil, err
 	}
 
-	matches := helpVmrunVersion.FindStringSubmatch(response)
+	matches := helpVmrunVersion.FindStringSubmatch(help)
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("Could not parse vmrun version information")
 	}
@@ -134,18 +127,12 @@ func getVmrunVersion(
 // getRunningVMNumber returns the number of running vms
 func getRunningVMNumber(
 	vmrun vmware.VmrunWrapper) (int, error) {
-	vmrunOut := vmrun.GetOutputChannel()
-	vmrunErr := vmrun.GetErrorChannel()
-	go vmrun.List()
-
-	var response string
-	select {
-	case response = <-vmrunOut:
-	case err := <-vmrunErr:
+	list, err := vmrun.List()
+	if err != nil {
 		return 0, err
 	}
 
-	matches := listVMNumber.FindStringSubmatch(response)
+	matches := listVMNumber.FindStringSubmatch(list)
 	if len(matches) < 2 {
 		return 0, fmt.Errorf("Could not parse vm number information")
 	}

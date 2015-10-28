@@ -1,7 +1,7 @@
 package util
 
 import (
-  "fmt"
+	"fmt"
 )
 
 // PrintASCIIHeader prints an ASCII header

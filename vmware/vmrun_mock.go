@@ -6,115 +6,63 @@ import (
 
 // MockVmrun provides access to many of the VMware Fusion vmrun API through the command line
 type MockVmrun struct {
-	outputChannel chan string
-	errorChannel  chan error
-}
-
-// GetOutputChannel returns the outputchannel of the MockVmrun wrapper
-func (vmrun *MockVmrun) GetOutputChannel() chan string {
-	return vmrun.outputChannel
-}
-
-// GetErrorChannel returns the errorchannel of the MockVmrun wrapper
-func (vmrun *MockVmrun) GetErrorChannel() chan error {
-	return vmrun.errorChannel
 }
 
 // NewMockVmrun returns a new CLIVmrun object
 func NewMockVmrun() *MockVmrun {
 	vmrun := new(MockVmrun)
-	vmrun.outputChannel = make(chan string)
-	vmrun.errorChannel = make(chan error)
 	return vmrun
-}
-
-// Close closes the MockVmrun channels
-func (vmrun *MockVmrun) Close() {
-	close(vmrun.outputChannel)
-	close(vmrun.errorChannel)
 }
 
 // Help runs the vmrun command without parameters resulting in
 // help message
-func (vmrun *MockVmrun) Help() {
+func (vmrun *MockVmrun) Help() (string, error) {
 	buffer, err := ioutil.ReadFile("../samples/vmrun/help.txt")
 	if err != nil {
-		vmrun.errorChannel <- err
-		return
+		return "", err
 	}
-	vmrun.outputChannel <- string(buffer)
+	return string(buffer), nil
 }
 
 // List lists all running vms
-func (vmrun *MockVmrun) List() {
+func (vmrun *MockVmrun) List() (string, error) {
 	buffer, err := ioutil.ReadFile("../samples/vmrun/list.txt")
 	if err != nil {
-		vmrun.errorChannel <- err
-		return
+		return "", err
 	}
-	vmrun.outputChannel <- string(buffer)
+	return string(buffer), nil
 }
 
 // Start starts a VM
-func (vmrun *MockVmrun) Start(vmx string) {
-
+func (vmrun *MockVmrun) Start(vmx string) error {
+	return nil
 }
 
 // Stop stops a VM
-func (vmrun *MockVmrun) Stop(vmx string, hard bool) {
-
+func (vmrun *MockVmrun) Stop(vmx string, force bool) error {
+	return nil
 }
 
-// Reset resets a VM
-func (vmrun *MockVmrun) Reset(vmx string, hard bool) {
-
-}
-
-// Suspend suspends a VM
-func (vmrun *MockVmrun) Suspend(vmx string, hard bool) {
-
-}
-
-// Pause pauses a VM
-func (vmrun *MockVmrun) Pause(vmx string) {
-
-}
-
-// Unpause unpauses a VM
-func (vmrun *MockVmrun) Unpause(vmx string) {
-
+// Delete starts a VM
+func (vmrun *MockVmrun) Delete(vmx string) error {
+	return nil
 }
 
 // ListSnapshots lists the snapshots of a VM
-func (vmrun *MockVmrun) ListSnapshots(vmx string) {
+func (vmrun *MockVmrun) ListSnapshots(vmx string) (string, error) {
 	buffer, err := ioutil.ReadFile("../samples/vmrun/listSnapshots.txt")
 	if err != nil {
-		vmrun.errorChannel <- err
-		return
+		return "", err
 	}
-	vmrun.outputChannel <- string(buffer)
+	return string(buffer), nil
 }
 
 // Snapshot creates a snapshot of a VM
-func (vmrun *MockVmrun) Snapshot(vmx string, name string) {
-	vmrun.outputChannel <- ""
-}
-
-// DeleteSnapshot deletes a snapshot of a VM
-func (vmrun *MockVmrun) DeleteSnapshot(vmx string) {
-
-}
-
-// RevertToSnapshot reverts a VM to a snapshot
-func (vmrun *MockVmrun) RevertToSnapshot(vmx string, name string) {
-
-}
-
-// Delete deletes a VM
-func (vmrun *MockVmrun) Delete(vmx string) {
-
+func (vmrun *MockVmrun) Snapshot(vmx string, name string) error {
+	return nil
 }
 
 // CloneLinked clones a linked VM
-func (vmrun *MockVmrun) CloneLinked(template string, cloneDir string, cloneName string, snapshot string){
+func (vmrun *MockVmrun) CloneLinked(template string, cloneDir string, cloneName string, snapshot string) error {
+	return nil
 }
