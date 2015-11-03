@@ -171,6 +171,22 @@ func (vmrun *MockVmrun) CloneLinked(template string, cloneDir string, cloneName 
 			return fmt.Errorf("Tried to create a VM that already exists!")
 		}
 	}
+	// Check if template exists
+	if template != vmrun.TemplateVM {
+		return fmt.Errorf("Template does not exist!")
+	}
+	// Check if snapshot exists
+	found := false
+	for _, existingSnapshot := range vmrun.TemplateSnapshots {
+		if existingSnapshot == snapshot {
+			found = true
+			break
+		}
+	}
+	if !found {
+		return fmt.Errorf("Snapshot does not exist!")
+	}
+	// Add the clone and return
 	vmrun.CloneFolderVMs = append(vmrun.CloneFolderVMs, clonePath)
 	return nil
 }
