@@ -10,6 +10,7 @@ import (
 func TestExecute(t *testing.T) {
 	Convey("Given a mock vmrun wrapper", t, func(context C) {
 		vmrun := vmware.NewMockVmrun()
+		vmrun.RunningVMs = append(vmrun.RunningVMs, "/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx")
 
 		Convey("Help() should return usage information and the version number", func() {
 

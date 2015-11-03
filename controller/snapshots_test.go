@@ -11,6 +11,12 @@ import (
 func TestSnapshots(t *testing.T) {
 	Convey("Given a mocked Vmrun Wrapper", t, func() {
 		vmrun := vmware.NewMockVmrun()
+		vmrun.TemplateVM = "/tmp/vmlcmverify/test.vmx"
+		vmrun.TemplateSnapshots = []string {
+			"SetUp",
+			"POM 2015",
+		}
+
 		config := new(util.LCMConfiguration)
 		config.ClonesDirectory = "/tmp/vmlcmverify/clones/"
 		config.TemplatePath = "/tmp/vmlcmverify/test.vmx"

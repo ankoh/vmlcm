@@ -12,6 +12,33 @@ import (
 func TestStatus(t *testing.T) {
 	Convey("Given a mocked Vmrun Wrapper", t, func() {
 		vmrun := vmware.NewMockVmrun()
+		runningPaths := []string {
+			"/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx",
+			"/Volumes/VM_SB3/VMware/dockerbruegge1.vmwarevm/dockerbruegge1.vmx",
+			"/Volumes/VM_SB3/VMware/repoarchbruegge.vmwarevm/repoarchbruegge.vmx",
+			"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-5.vmwarevm/buildagent-mac-5.vmx",
+			"/Volumes/VM_SB3/VMware/LS1Cloud.vmwarevm/LS1Cloud.vmx",
+			"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-6.vmwarevm/buildagent-mac-6.vmx",
+			"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-4.vmwarevm/buildagent-mac-4.vmx",
+			"/Volumes/VM_SB3/VMware/backupbruegge.vmwarevm/backupbruegge.vmx",
+			"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-8.vmwarevm/buildagent-mac-8.vmx",
+			"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-7.vmwarevm/buildagent-mac-7.vmx",
+			"/Volumes/VM_SB3/VMware/mailbruegge.vmwarevm/mailbruegge.vmx",
+			"/Volumes/VM_SB3/VMware/webbruegge_prelive.vmwarevm/webbruegge_prelive.vmx",
+			"/Volumes/VM_SB3/VMware/monitorbruegge.vmwarevm/monitorbruegge.vmx",
+		}
+		for _, runningPath := range runningPaths {
+			vmrun.RunningVMs = append(vmrun.RunningVMs, runningPath)
+		}
+		clonePaths := []string {
+			"/tmp/vmlcmstatus/pom2015-a1b1c1d1e1f1.vmwarevm/pom2015-a1b1c1d1e1f1.vmx",
+			"/tmp/vmlcmstatus/pom2015-a2b2c2d2e2f2.vmwarevm/pom2015-a2b2c2d2e2f2.vmx",
+			"/tmp/vmlcmstatus/pom2015-a3b3c3d3e3f3.vmwarevm/pom2015-a3b3c3d3e3f3.vmx",
+		}
+		for _, clonePath := range clonePaths {
+			vmrun.CloneFolderVMs = append(vmrun.CloneFolderVMs, clonePath)
+		}
+
 
 		Convey("getVmrunVersion should be able to parse the version information", func() {
 			result, err := getVmrunVersion(vmrun)
@@ -58,26 +85,6 @@ func TestStatus(t *testing.T) {
 			// Build map with vms
 			for _, vm := range vms {
 				vmMap[vm.path] = vm
-			}
-
-			// First check all running vms
-			runningPaths := []string{
-				"/Volumes/VM_SB3/VMware/webbruegge.vmwarevm/webbruegge.vmx",
-				"/Volumes/VM_SB3/VMware/dockerbruegge1.vmwarevm/dockerbruegge1.vmx",
-				"/Volumes/VM_SB3/VMware/repoarchbruegge.vmwarevm/repoarchbruegge.vmx",
-				"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-5.vmwarevm/buildagent-mac-5.vmx",
-				"/Volumes/VM_SB3/VMware/LS1Cloud.vmwarevm/LS1Cloud.vmx",
-				"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-6.vmwarevm/buildagent-mac-6.vmx",
-				"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-4.vmwarevm/buildagent-mac-4.vmx",
-				"/Volumes/VM_SB3/VMware/backupbruegge.vmwarevm/backupbruegge.vmx",
-				"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-8.vmwarevm/buildagent-mac-8.vmx",
-				"/Volumes/VM_SB3/VMware/build-agents-reserve/buildagent-mac-7.vmwarevm/buildagent-mac-7.vmx",
-				"/Volumes/VM_SB3/VMware/mailbruegge.vmwarevm/mailbruegge.vmx",
-				"/Volumes/VM_SB3/VMware/webbruegge_prelive.vmwarevm/webbruegge_prelive.vmx",
-				"/Volumes/VM_SB3/VMware/monitorbruegge.vmwarevm/monitorbruegge.vmx",
-				"/tmp/vmlcmstatus/pom2015-a1b1c1d1e1f1.vmwarevm/pom2015-a1b1c1d1e1f1.vmx",
-				"/tmp/vmlcmstatus/pom2015-a2b2c2d2e2f2.vmwarevm/pom2015-a2b2c2d2e2f2.vmx",
-				"/tmp/vmlcmstatus/pom2015-a3b3c3d3e3f3.vmwarevm/pom2015-a3b3c3d3e3f3.vmx",
 			}
 
 			for _, path := range runningPaths {
