@@ -55,7 +55,7 @@ func Status(
 	buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone))
 	buffer.WriteString(fmt.Sprintf("%-20s %s\n", "Vmrun version", version.version))
 	buffer.WriteString(fmt.Sprintf("%-20s %s\n\n", "Vmrun build", version.build))
-	buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Prefix", util.ColorCyan, config.Prefix, util.ColorNone))
+	buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n\n", "Prefix", util.ColorCyan, config.Prefix, util.ColorNone))
 	buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Template path", util.ColorCyan, config.TemplatePath, util.ColorNone))
 	if template.running {
 		buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Online", util.ColorNone))
