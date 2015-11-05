@@ -28,5 +28,74 @@ func TestExecute(t *testing.T) {
 			So(err, ShouldBeNil)
 		})
 
+
+		Convey("CloneLinked() should correctly clone in a clean environment", func() {
+			vmrun.TemplateVM = "/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx"
+			vmrun.RunningVMs = []string{}
+			vmrun.CloneFolderVMs = []string{}
+			vmrun.TemplateSnapshots = []string {
+				"existing-snapshot-1",
+				"existing-snapshot-2",
+			}
+			vmrun.CloneLinked(
+				"/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx",
+				"/tmp/vmlcmclones/",
+				"pom2015-12345678",
+				"existing-snapshot-1")
+			So(vmrun.CloneFolderVMs, ShouldNotBeNil)
+			So(len(vmrun.CloneFolderVMs), ShouldEqual, 1)
+			So(vmrun.CloneFolderVMs[0], ShouldEqual,
+				"/tmp/vmlcmclones/pom2015-12345678.vmwarevm/pom2015-12345678.vmx")
+		})
+
+		Convey("CloneLinked() should return an error if vm exists", func() {
+			vmrun.TemplateVM = "/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx"
+			vmrun.RunningVMs = []string{}
+			vmrun.CloneFolderVMs = []string{
+				"/tmp/vmlcmclones/pom2015-12345678.vmwarevm/pom2015-12345678.vmx",
+			}
+			vmrun.TemplateSnapshots = []string {
+				"existing-snapshot-1",
+				"existing-snapshot-2",
+			}
+			err := vmrun.CloneLinked(
+				"/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx",
+				"/tmp/vmlcmclones/",
+				"pom2015-12345678",
+				"existing-snapshot-1")
+			So(err, ShouldNotBeNil)
+		})
+
+		Convey("CloneLinked() should return an error if snapshot does not exist", func() {
+			vmrun.TemplateVM = "/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx"
+			vmrun.RunningVMs = []string{}
+			vmrun.CloneFolderVMs = []string{}
+			vmrun.TemplateSnapshots = []string {
+				"existing-snapshot-1",
+				"existing-snapshot-2",
+			}
+			err := vmrun.CloneLinked(
+				"/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx",
+				"/tmp/vmlcmclones/",
+				"pom2015-12345678",
+				"not-existing-snapshot")
+			So(err, ShouldNotBeNil)
+		})
+
+		Convey("CloneLinked() should return an error if template does not exist", func() {
+			vmrun.TemplateVM = "/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx"
+			vmrun.RunningVMs = []string{}
+			vmrun.CloneFolderVMs = []string{}
+			vmrun.TemplateSnapshots = []string {
+				"existing-snapshot-1",
+				"existing-snapshot-2",
+			}
+			err := vmrun.CloneLinked(
+				"/not/existing",
+				"/tmp/vmlcmclones/",
+				"pom2015-12345678",
+				"not-existing-snapshot")
+			So(err, ShouldNotBeNil)
+		})
 	})
 }

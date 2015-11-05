@@ -8,7 +8,6 @@ import (
   "strings"
 
 	"github.com/ankoh/vmlcm/util"
-	//"github.com/ankoh/vmlcm/vmware"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
