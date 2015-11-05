@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"bytes"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -14,12 +15,12 @@ var validPrefix = regexp.MustCompile("^[A-Za-z0-9]+$")
 
 // Verify verifies the provided settings
 func Verify(
-	logger *util.Logger,
+	buffer *bytes.Buffer,
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration) error {
 
 	// First check the paths
-	err := verifyConfigurationPaths(logger, config)
+	err := verifyConfigurationPaths(buffer, config)
 	if err != nil {
 		return err
 	}
@@ -27,50 +28,50 @@ func Verify(
 	// Verify Prefix
 	ok := validPrefix.MatchString(config.Prefix)
 	if !ok {
-		logger.LogVerification("Verifying prefix", false)
+		util.WriteVerification(buffer, "Verifying prefix", false)
 		return fmt.Errorf("Prefix must match the RegEx /^[A-Za-z0-9]+$/")
 	}
-	logger.LogVerification("Verifying prefix", true)
+	util.WriteVerification(buffer, "Verifying prefix", true)
 
 	// Verify Mac addresses
 	err = testMacAddresses(config)
 	if err != nil {
-		logger.LogVerification("Verifying MAC addresses", false)
+		util.WriteVerification(buffer, "Verifying MAC addresses", false)
 		return err
 	}
-	logger.LogVerification("Verifying MAC addresses", true)
+	util.WriteVerification(buffer, "Verifying MAC addresses", true)
 
 	// Test vmrun help
 	err = testVmrunHelp(vmrun)
 	if err != nil {
-		logger.LogVerification("Verifying vmrun executable", false)
+		util.WriteVerification(buffer, "Verifying vmrun executable", false)
 		return err
 	}
-	logger.LogVerification("Verifying vmrun executable", true)
+	util.WriteVerification(buffer, "Verifying vmrun executable", true)
 
 	// Test clone read
 	err = testCloneRead(config)
 	if err != nil {
-		logger.LogVerification("Verifying clone list", false)
+		util.WriteVerification(buffer, "Verifying clone list", false)
 		return err
 	}
-	logger.LogVerification("Verifying clone list", true)
+	util.WriteVerification(buffer, "Verifying clone list", true)
 
 	// Test clone write
 	err = testCloneWrite(config)
 	if err != nil {
-		logger.LogVerification("Verifying clone write", false)
+		util.WriteVerification(buffer, "Verifying clone write", false)
 		return err
 	}
-	logger.LogVerification("Verifying clone write", true)
+	util.WriteVerification(buffer, "Verifying clone write", true)
 
 	// Delete test file
 	err = deleteTestFile(config)
 	if err != nil {
-		logger.LogVerification("Deleting test file", false)
+		util.WriteVerification(buffer, "Deleting test file", false)
 		return err
 	}
-	logger.LogVerification("Deleting test file", true)
+	util.WriteVerification(buffer, "Deleting test file", true)
 
 	return nil
 }
@@ -148,44 +149,44 @@ func isValidPath(path string) bool {
 
 // validateConfigurationPaths validates a given LCM configuration
 func verifyConfigurationPaths(
-	logger *util.Logger,
+	buffer *bytes.Buffer,
 	config *util.LCMConfiguration) error {
 	// Check Vmrun executable
 	if !isValidPath(config.Vmrun) {
-		logger.LogVerification("Verifying vmrun path", false)
+		util.WriteVerification(buffer, "Verifying vmrun path", false)
 		return fmt.Errorf("Invalid vmrun path: %s", config.Vmrun)
 	}
-	logger.LogVerification("Verifying vmrun path", true)
+	util.WriteVerification(buffer, "Verifying vmrun path", true)
 
 	// Check Clones directory
 	if !isValidPath(config.ClonesDirectory) {
-		logger.LogVerification("Verifying clones directroy", false)
+		util.WriteVerification(buffer, "Verifying clones directroy", false)
 		return fmt.Errorf("Invalid clones directory: %s", config.ClonesDirectory)
 	}
-	logger.LogVerification("Verifying clones directroy", true)
+	util.WriteVerification(buffer, "Verifying clones directroy", true)
 
 	// Check if Clones directory is a trailing slash
 	matches, err := regexp.MatchString(".*/$", config.ClonesDirectory)
 	if err != nil || !matches {
-		logger.LogVerification("Verifying directory trailing slash", false)
+		util.WriteVerification(buffer, "Verifying directory trailing slash", false)
 		return fmt.Errorf("The clones directory path must have a trailing slash")
 	}
-	logger.LogVerification("Verifying directory trailing slash", true)
+	util.WriteVerification(buffer, "Verifying directory trailing slash", true)
 
 	// Check Template path
 	if !isValidPath(config.TemplatePath) {
-		logger.LogVerification("Verifying template path", false)
+		util.WriteVerification(buffer, "Verifying template path", false)
 		return fmt.Errorf("Invalid template path: %s", config.TemplatePath)
 	}
-	logger.LogVerification("Verifying template path", true)
+	util.WriteVerification(buffer, "Verifying template path", true)
 
 	// Check if the template path ends with vmx
 	matches, err = regexp.MatchString(".*\\.vmx$", config.TemplatePath)
 	if err != nil || !matches {
-		logger.LogVerification("Verifying template extension", false)
+		util.WriteVerification(buffer, "Verifying template extension", false)
 		return fmt.Errorf("The template path must end with '.vmx'")
 	}
-	logger.LogVerification("Verifying template extension", true)
+	util.WriteVerification(buffer, "Verifying template extension", true)
 
 	return nil
 }
