@@ -44,7 +44,7 @@ func Use(
 
 	// Check if number of existing clones equals the parameter (== noop)
 	if len(clones) == use {
-		util.TryWrite2Columns(buffer, 20, "Task", "Nothing")
+		util.TryWrite2Columns(buffer, 20, "Task", "Die")
 		return nil
 	}
 
@@ -56,9 +56,11 @@ func Use(
 			return err
 		}
 		util.TryWrite2Columns(buffer, 20, "Created clones", fmt.Sprint(len(newClones)))
+		util.TryWriteln(buffer, "")
 		for _, newClone := range newClones {
-			util.TryWrite(buffer, fmt.Sprintf(" |- %s", newClone))
+			util.TryWrite(buffer, fmt.Sprintf("  %s\n", newClone))
 		}
+		util.TryWriteln(buffer, "")
 	}
 
 	// Check if clones need to be deleted
