@@ -94,10 +94,12 @@ func (vmrun *CLIVmrun) CloneLinked(
 	snapshot string) error {
 	vmwarevmPath := fmt.Sprintf("%s%s.vmwarevm", cloneDir, cloneName)
 	vmxPath := fmt.Sprintf("%s/%s.vmx", vmwarevmPath, cloneName)
-	os.Mkdir(vmwarevmPath, 0755)
-
-	_, err := exec.Command(vmrun.vmrunPath,
-		"-T", "fusion", "stop",
+	err := os.Mkdir(vmwarevmPath, 0755)
+	if err != nil {
+		return err
+	}
+	_, err = exec.Command(vmrun.vmrunPath,
+		"-T", "fusion",
 		"clone", template, vmxPath,
 		"linked",
 		fmt.Sprintf("-snapshot=%s", snapshot),

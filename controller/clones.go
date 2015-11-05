@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"bytes"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -14,7 +15,9 @@ import (
 var vmxName = regexp.MustCompile("([A-Za-z0-9-]+\\.vmx)$")
 
 // Use ensures that <<use>> number of clones exist
+// Attention buffer may be nil
 func Use(
+	buffer *bytes.Buffer,
 	vmrun vmware.VmrunWrapper,
 	config *util.LCMConfiguration,
 	use int) error {
@@ -36,19 +39,31 @@ func Use(
 		return err
 	}
 
+	util.TryWrite2Columns(buffer, 20, "Old clones", fmt.Sprint(len(clones)))
+	util.TryWrite2Columns(buffer, 20, "New clones", fmt.Sprint(use))
+
 	// Check if number of existing clones equals the parameter (== noop)
 	if len(clones) == use {
+		util.TryWrite2Columns(buffer, 20, "Task", "Nothing")
 		return nil
 	}
 
 	// Check if clones need to be created
 	if len(clones) < use {
-		_, err = cloneUpTo(vmrun, config, clones, use)
-		return err
+		util.TryWrite2Columns(buffer, 20, "Task", "Clone")
+		newClones, err := cloneUpTo(vmrun, config, clones, use)
+		if err != nil {
+			return err
+		}
+		util.TryWrite2Columns(buffer, 20, "Created clones", fmt.Sprint(len(newClones)))
+		for _, newClone := range newClones {
+			util.TryWrite(buffer, fmt.Sprintf(" |- %s", newClone))
+		}
 	}
 
 	// Check if clones need to be deleted
 	if len(clones) > use {
+		util.TryWrite2Columns(buffer, 20, "Task", "Delete")
 		_, err = deleteUpTo(vmrun, config, clones, use)
 	}
 
@@ -170,7 +185,7 @@ func cloneUpTo(
 	// Get snapshot for the clones
 	snapshot, err := prepareTemplateSnapshot(vmrun, config)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to prepare snapshot\n%s", err.Error())
 	}
 	var created []string
 
@@ -185,7 +200,7 @@ func cloneUpTo(
 			config.ClonesDirectory,
 			vmName, snapshot)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Failed to clone vm %s\n%s", vmName, err.Error())
 		}
 		created = append(created, vmName)
 	}

@@ -28,50 +28,50 @@ func Verify(
 	// Verify Prefix
 	ok := validPrefix.MatchString(config.Prefix)
 	if !ok {
-		util.WriteVerification(buffer, "Verifying prefix", false)
+		util.TryWriteVerification(buffer, "Verifying prefix", false)
 		return fmt.Errorf("Prefix must match the RegEx /^[A-Za-z0-9]+$/")
 	}
-	util.WriteVerification(buffer, "Verifying prefix", true)
+	util.TryWriteVerification(buffer, "Verifying prefix", true)
 
 	// Verify Mac addresses
 	err = testMacAddresses(config)
 	if err != nil {
-		util.WriteVerification(buffer, "Verifying MAC addresses", false)
+		util.TryWriteVerification(buffer, "Verifying MAC addresses", false)
 		return err
 	}
-	util.WriteVerification(buffer, "Verifying MAC addresses", true)
+	util.TryWriteVerification(buffer, "Verifying MAC addresses", true)
 
 	// Test vmrun help
 	err = testVmrunHelp(vmrun)
 	if err != nil {
-		util.WriteVerification(buffer, "Verifying vmrun executable", false)
+		util.TryWriteVerification(buffer, "Verifying vmrun executable", false)
 		return err
 	}
-	util.WriteVerification(buffer, "Verifying vmrun executable", true)
+	util.TryWriteVerification(buffer, "Verifying vmrun executable", true)
 
 	// Test clone read
 	err = testCloneRead(config)
 	if err != nil {
-		util.WriteVerification(buffer, "Verifying clone list", false)
+		util.TryWriteVerification(buffer, "Verifying clone list", false)
 		return err
 	}
-	util.WriteVerification(buffer, "Verifying clone list", true)
+	util.TryWriteVerification(buffer, "Verifying clone list", true)
 
 	// Test clone write
 	err = testCloneWrite(config)
 	if err != nil {
-		util.WriteVerification(buffer, "Verifying clone write", false)
+		util.TryWriteVerification(buffer, "Verifying clone write", false)
 		return err
 	}
-	util.WriteVerification(buffer, "Verifying clone write", true)
+	util.TryWriteVerification(buffer, "Verifying clone write", true)
 
 	// Delete test file
 	err = deleteTestFile(config)
 	if err != nil {
-		util.WriteVerification(buffer, "Deleting test file", false)
+		util.TryWriteVerification(buffer, "Deleting test file", false)
 		return err
 	}
-	util.WriteVerification(buffer, "Deleting test file", true)
+	util.TryWriteVerification(buffer, "Deleting test file", true)
 
 	return nil
 }
@@ -153,40 +153,40 @@ func verifyConfigurationPaths(
 	config *util.LCMConfiguration) error {
 	// Check Vmrun executable
 	if !isValidPath(config.Vmrun) {
-		util.WriteVerification(buffer, "Verifying vmrun path", false)
+		util.TryWriteVerification(buffer, "Verifying vmrun path", false)
 		return fmt.Errorf("Invalid vmrun path: %s", config.Vmrun)
 	}
-	util.WriteVerification(buffer, "Verifying vmrun path", true)
+	util.TryWriteVerification(buffer, "Verifying vmrun path", true)
 
 	// Check Clones directory
 	if !isValidPath(config.ClonesDirectory) {
-		util.WriteVerification(buffer, "Verifying clones directroy", false)
+		util.TryWriteVerification(buffer, "Verifying clones directroy", false)
 		return fmt.Errorf("Invalid clones directory: %s", config.ClonesDirectory)
 	}
-	util.WriteVerification(buffer, "Verifying clones directroy", true)
+	util.TryWriteVerification(buffer, "Verifying clones directroy", true)
 
 	// Check if Clones directory is a trailing slash
 	matches, err := regexp.MatchString(".*/$", config.ClonesDirectory)
 	if err != nil || !matches {
-		util.WriteVerification(buffer, "Verifying directory trailing slash", false)
+		util.TryWriteVerification(buffer, "Verifying directory trailing slash", false)
 		return fmt.Errorf("The clones directory path must have a trailing slash")
 	}
-	util.WriteVerification(buffer, "Verifying directory trailing slash", true)
+	util.TryWriteVerification(buffer, "Verifying directory trailing slash", true)
 
 	// Check Template path
 	if !isValidPath(config.TemplatePath) {
-		util.WriteVerification(buffer, "Verifying template path", false)
+		util.TryWriteVerification(buffer, "Verifying template path", false)
 		return fmt.Errorf("Invalid template path: %s", config.TemplatePath)
 	}
-	util.WriteVerification(buffer, "Verifying template path", true)
+	util.TryWriteVerification(buffer, "Verifying template path", true)
 
 	// Check if the template path ends with vmx
 	matches, err = regexp.MatchString(".*\\.vmx$", config.TemplatePath)
 	if err != nil || !matches {
-		util.WriteVerification(buffer, "Verifying template extension", false)
+		util.TryWriteVerification(buffer, "Verifying template extension", false)
 		return fmt.Errorf("The template path must end with '.vmx'")
 	}
-	util.WriteVerification(buffer, "Verifying template extension", true)
+	util.TryWriteVerification(buffer, "Verifying template extension", true)
 
 	return nil
 }

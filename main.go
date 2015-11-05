@@ -66,9 +66,10 @@ func main() {
 			fmt.Println("Failed to verify settings. Please run 'verify' to get more details")
 			return
 		}
-		err := controller.Use(vmrun, config, args.CommandIntParameter)
+		err := controller.Use(buffer, vmrun, config, args.CommandIntParameter)
 		if err != nil {
 			spinner.Stop()
+			fmt.Print(buffer.String())
 			fmt.Println(err.Error())
 			return
 		}
