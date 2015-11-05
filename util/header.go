@@ -1,15 +1,17 @@
 package util
 
 import (
-	"fmt"
+	"bytes"
 )
 
-// PrintASCIIHeader prints an ASCII header
-func PrintASCIIHeader() {
-	fmt.Println("                    __             ")
-	fmt.Println("   _   ______ ___  / /________ ___ ")
-	fmt.Println("  | | / / __ `__ \\/ / ___/ __ `__ \\")
-	fmt.Println("  | |/ / / / / / / / /__/ / / / / /")
-	fmt.Println("  |___/_/ /_/ /_/_/\\___/_/ /_/ /_/ ")
-	fmt.Println("                                   ")
+// GenerateASCIIHeader prints an ASCII header
+func GenerateASCIIHeader() string {
+	buffer := new(bytes.Buffer)
+	buffer.WriteString("                    __             \n")
+	buffer.WriteString("   _   ______ ___  / /________ ___ \n")
+	buffer.WriteString("  | | / / __ `__ \\/ / ___/ __ `__ \\\n")
+	buffer.WriteString("  | |/ / / / / / / / /__/ / / / / /\n")
+	buffer.WriteString("  |___/_/ /_/ /_/_/\\___/_/ /_/ /_/ \n")
+	buffer.WriteString("                                   \n")
+	return buffer.String()
 }

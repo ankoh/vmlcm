@@ -48,12 +48,22 @@ func main() {
 			return
 		}
 
-		err := controller.Status(logger, vmrun, config, spinner)
+		buffer, err := controller.Status(logger, vmrun, config)
 		if err != nil {
+			spinner.Stop()
 			fmt.Println(err.Error())
+		} else {
+			spinner.Stop()
+			if buffer != nil {
+				fmt.Print(buffer.String())
+			}
 		}
 	case util.UseCommand:
-		fmt.Println("Not implemented yet")
+		spinner.Start()
+		if verify(logger, vmrun, config) != nil {
+			spinner.Stop()
+			return
+		}
 	case util.StartCommand:
 		fmt.Println("Not implemented yet")
 	case util.StopCommand:

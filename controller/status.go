@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"github.com/briandowns/spinner"
+	"bytes"
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
 )
@@ -14,24 +14,17 @@ import (
 func Status(
 	logger *util.Logger,
 	vmrun vmware.VmrunWrapper,
-	config *util.LCMConfiguration,
-	spinner *spinner.Spinner) error {
-
-	// Starting spinner
-	if !logger.Silent {
-		spinner.Start()
-	}
-
+	config *util.LCMConfiguration) (*bytes.Buffer, error) {
 	// Fetch vmrun version
 	version, err := getVmrunVersion(vmrun)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Fetch all vms that can be discovered easily (clone folder && running)
 	vms, err := getVMs(vmrun, config)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// build clones Array
@@ -53,61 +46,57 @@ func Status(
 	// get template snapshots
 	snapshots, err := getTemplateSnapshots(vmrun, config)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Print report
 	if !logger.Silent {
-		spinner.Stop()
-
-		util.PrintASCIIHeader()
-		fmt.Println()
-		fmt.Printf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone)
-		fmt.Printf("%-20s %s\n", "Vmrun version", version.version)
-		fmt.Printf("%-20s %s\n", "Vmrun build", version.build)
-		fmt.Println()
-		fmt.Printf("%-20s %s%s%s\n", "Prefix", util.ColorCyan, config.Prefix, util.ColorNone)
-		fmt.Printf("%-20s %s%s%s\n", "Template path", util.ColorCyan, config.TemplatePath, util.ColorNone)
+		buffer := new(bytes.Buffer)
+		buffer.WriteString(util.GenerateASCIIHeader())
+		buffer.WriteString("\n")
+		buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Vmrun executable", util.ColorCyan, config.Vmrun, util.ColorNone))
+		buffer.WriteString(fmt.Sprintf("%-20s %s\n", "Vmrun version", version.version))
+		buffer.WriteString(fmt.Sprintf("%-20s %s\n\n", "Vmrun build", version.build))
+		buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Prefix", util.ColorCyan, config.Prefix, util.ColorNone))
+		buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Template path", util.ColorCyan, config.TemplatePath, util.ColorNone))
 		if template.running {
-			fmt.Printf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Online", util.ColorNone)
+			buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Online", util.ColorNone))
 		} else {
-			fmt.Printf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Offline", util.ColorNone)
+			buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "Template status", util.ColorNone, "Offline", util.ColorNone))
 		}
-		fmt.Println("Template snapshots")
+		buffer.WriteString("Template snapshots\n")
 		for _, snapshot := range snapshots {
-			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, snapshot, util.ColorNone)
+			buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "", util.ColorCyan, snapshot, util.ColorNone))
 		}
 		if len(snapshots) == 0 {
-			fmt.Printf("%-20s %s\n", "", "No snapshots existing\n")
+			buffer.WriteString(fmt.Sprintf("%-20s %s\n", "", "No snapshots existing\n"))
 		}
-		fmt.Println()
-		fmt.Println("MAC addresses")
+		buffer.WriteString("\nMAC addresses\n")
 		for _, address := range config.Addresses {
-			fmt.Printf("%-20s %s%s%s\n", "", util.ColorCyan, address, util.ColorNone)
+			buffer.WriteString(fmt.Sprintf("%-20s %s%s%s\n", "", util.ColorCyan, address, util.ColorNone))
 		}
 		if len(config.Addresses) == 0 {
-			fmt.Printf("%-20s %s\n", "", "No addresses existing\n")
+			buffer.WriteString(fmt.Sprintf("%-20s %s\n", "", "No addresses existing\n"))
 		}
-		fmt.Println()
-		fmt.Printf("%-20s %s%s%s\n", "Clones directory", util.ColorCyan, config.ClonesDirectory, util.ColorNone)
-		fmt.Printf("%-20s %s%d%s\n", "Linked clones", util.ColorNone, len(clones), util.ColorNone)
-		fmt.Println()
+		buffer.WriteString(fmt.Sprintf("\n%-20s %s%s%s\n", "Clones directory", util.ColorCyan, config.ClonesDirectory, util.ColorNone))
+		buffer.WriteString(fmt.Sprintf("%-20s %s%d%s\n\n", "Linked clones", util.ColorNone, len(clones), util.ColorNone))
 		if len(clones) == 0 {
-			fmt.Printf("  No clones exsting for given prefix\n")
+			buffer.WriteString("  No clones exsting for given prefix\n")
 		} else {
 			for _, clone := range clones {
 				if clone.running {
 					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
-					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorCyan, "Online", util.ColorNone)
+					buffer.WriteString(fmt.Sprintf("  %-65s [%s%s%s]\n", name, util.ColorCyan, "Online", util.ColorNone))
 				} else {
 					name := strings.TrimPrefix(clone.path, config.ClonesDirectory)
-					fmt.Printf("  %-65s [%s%s%s]\n", name, util.ColorLightGray, "Offline", util.ColorNone)
+					buffer.WriteString(fmt.Sprintf("  %-65s [%s%s%s]\n", name, util.ColorLightGray, "Offline", util.ColorNone))
 				}
 			}
 		}
-		fmt.Println()
+		buffer.WriteString("\n")
+		return buffer, nil
 	}
-	return nil
+	return nil, nil
 }
 
 var helpVmrunVersion = regexp.MustCompile("vmrun version (\\d+\\.\\d+\\.\\d+) build-(\\d+)")
