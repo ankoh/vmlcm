@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"regexp"
+	"sort"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -141,6 +142,7 @@ func getAvailableMacAddresses(
 	for address := range availableAddresses {
 		remainingAddresses = append(remainingAddresses, address)
 	}
+	sort.Strings(remainingAddresses)
 	return remainingAddresses
 }
 
@@ -150,15 +152,19 @@ func cloneUpTo(
 	config *util.LCMConfiguration,
 	clones []*virtualMachine,
 	use int) ([]string, error) {
+	// Assert use greater zero
+	if use <= 0 {
+		return []string {}, nil
+	}
+
 	// First get available mac addresses
 	availableAddresses := getAvailableMacAddresses(clones, config)
 
 	// calculate how many clones need to be created
-	toCreate := int(math.Min(
-		float64(len(availableAddresses)),
-		math.Abs(float64(use-len(clones)))))
+	diff := math.Max(0, float64(use - len(clones)))
+	toCreate := int(math.Min(float64(len(availableAddresses)), diff))
 	if toCreate <= 0 {
-		return nil, nil
+		return []string {}, nil
 	}
 
 	// Get snapshot for the clones
@@ -166,7 +172,6 @@ func cloneUpTo(
 	if err != nil {
 		return nil, err
 	}
-
 	var created []string
 
 	// Now fire the clone command for each of the addresses
