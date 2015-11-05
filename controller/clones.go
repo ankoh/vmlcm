@@ -3,7 +3,7 @@ package controller
 import (
 	"fmt"
 	"math"
-	"os"
+	"strings"
 	"regexp"
 	"sort"
 	"bytes"
@@ -44,29 +44,35 @@ func Use(
 
 	// Check if number of existing clones equals the parameter (== noop)
 	if len(clones) == use {
-		util.TryWrite2Columns(buffer, 20, "Task", "Die")
+		util.TryWrite(buffer, "\nNothing to do...\t:'(\n\n")
 		return nil
 	}
 
 	// Check if clones need to be created
 	if len(clones) < use {
-		util.TryWrite2Columns(buffer, 20, "Task", "Clone")
-		newClones, err := cloneUpTo(vmrun, config, clones, use)
+		createdClones, err := cloneUpTo(vmrun, config, clones, use)
 		if err != nil {
 			return err
 		}
-		util.TryWrite2Columns(buffer, 20, "Created clones", fmt.Sprint(len(newClones)))
 		util.TryWriteln(buffer, "")
-		for _, newClone := range newClones {
-			util.TryWrite(buffer, fmt.Sprintf("  %s\n", newClone))
+		for _, createdClone := range createdClones {
+			util.TryWrite2Columns(buffer, 20, "  Create clone", createdClone)
 		}
 		util.TryWriteln(buffer, "")
 	}
 
 	// Check if clones need to be deleted
 	if len(clones) > use {
-		util.TryWrite2Columns(buffer, 20, "Task", "Delete")
-		_, err = deleteUpTo(vmrun, config, clones, use)
+		deletedClones, err := deleteUpTo(vmrun, config, clones, use)
+		if err != nil {
+			return err
+		}
+		util.TryWrite2Columns(buffer, 20, "Deleted clones", fmt.Sprint(len(deletedClones)))
+		util.TryWriteln(buffer, "")
+		for _, deletedClone := range deletedClones {
+			util.TryWrite2Columns(buffer, 20, "  Deleted clone", deletedClone)
+		}
+		util.TryWriteln(buffer, "")
 	}
 
 	return nil
@@ -104,10 +110,20 @@ func deleteUpTo(
 			}
 		}
 
-		// Then delete the clone
-		os.RemoveAll(clone.path)
-		// TODO: The vmware folder still exsits
-		deletedClones = append(deletedClones, clone.path)
+		// Run Vmrun delete
+		err := vmrun.Delete(clone.path)
+		if err != nil {
+			return nil, err
+		}
+
+		// Try to find the vmName
+		vmxMatch := vmxName.FindStringSubmatch(clone.path)
+		if len(vmxMatch) != 2 {
+			deletedClones = append(deletedClones, clone.path)
+		} else {
+			vmName := strings.TrimSuffix(vmxMatch[1], ".vmx")
+			deletedClones = append(deletedClones, vmName)
+		}
 	}
 
 	return deletedClones, nil
