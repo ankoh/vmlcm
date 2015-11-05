@@ -56,7 +56,7 @@ func Use(
 		}
 		util.TryWriteln(buffer, "")
 		for _, createdClone := range createdClones {
-			util.TryWrite2Columns(buffer, 20, "  Create clone", createdClone)
+			util.TryWrite2Columns(buffer, 20, "  Created clone", createdClone)
 		}
 		util.TryWriteln(buffer, "")
 	}
