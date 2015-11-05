@@ -75,11 +75,31 @@ func main() {
 			return
 		}
 	case util.StartCommand:
-		spinner.Stop()
-		fmt.Println("Not implemented yet")
+		if controller.Verify(nil, vmrun, config) != nil {
+			spinner.Stop()
+			fmt.Println("Failed to verify settings. Please run 'verify' to get more details")
+			return
+		}
+		err := controller.Start(buffer, vmrun, config)
+		if err != nil {
+			spinner.Stop()
+			fmt.Print(buffer.String())
+			fmt.Println(err.Error())
+			return
+		}
 	case util.StopCommand:
-		spinner.Stop()
-		fmt.Println("Not implemented yet")
+		if controller.Verify(nil, vmrun, config) != nil {
+			spinner.Stop()
+			fmt.Println("Failed to verify settings. Please run 'verify' to get more details")
+			return
+		}
+		err := controller.Stop(buffer, vmrun, config)
+		if err != nil {
+			spinner.Stop()
+			fmt.Print(buffer.String())
+			fmt.Println(err.Error())
+			return
+		}
 	}
 
 	// Stop spinner
