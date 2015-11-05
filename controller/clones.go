@@ -67,7 +67,6 @@ func Use(
 		if err != nil {
 			return err
 		}
-		util.TryWrite2Columns(buffer, 20, "Deleted clones", fmt.Sprint(len(deletedClones)))
 		util.TryWriteln(buffer, "")
 		for _, deletedClone := range deletedClones {
 			util.TryWrite2Columns(buffer, 20, "  Deleted clone", deletedClone)
