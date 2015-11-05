@@ -14,6 +14,7 @@ import (
 func main() {
 	// Create spinner
 	spinner := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
+	spinner.Color("cyan")
 	spinner.Start()
 
 	// First read arguments

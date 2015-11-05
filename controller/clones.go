@@ -44,7 +44,9 @@ func Use(
 
 	// Check if number of existing clones equals the parameter (== noop)
 	if len(clones) == use {
-		util.TryWrite(buffer, "\nNothing to do...\t:'(\n\n")
+		util.TryWriteln(buffer, "")
+		util.TryWrite2Columns(buffer, 20, "  Nothing to do...", ":'(")
+		util.TryWriteln(buffer, "")
 		return nil
 	}
 
