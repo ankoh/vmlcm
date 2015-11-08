@@ -29,7 +29,7 @@ func TestDirectory(t *testing.T) {
 
 			So(err, ShouldBeNil)
 			So(files, ShouldNotBeNil)
-			So(len(files), ShouldEqual, 2)
+			So(len(files), ShouldEqual, 3)
 		})
 	})
 }
