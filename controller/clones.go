@@ -213,7 +213,12 @@ func cloneUpTo(
 		address := availableAddresses[i]
 		vmID := util.MacAddressToVMId(address)
 		vmName := fmt.Sprintf("%s-%s", config.Prefix, vmID)
+		vmxPath := fmt.Sprintf(
+			"%s%s.vmwarevm/%s.vmx",
+			config.ClonesDirectory,
+			vmName, vmName)
 
+		// First create the linked clone
 		err := vmrun.CloneLinked(
 			config.TemplatePath,
 			config.ClonesDirectory,
@@ -221,6 +226,14 @@ func cloneUpTo(
 		if err != nil {
 			return nil, fmt.Errorf("Failed to clone vm %s\n%s", vmName, err.Error())
 		}
+
+		// Then configure that clone with the mac address
+		err = util.UpdateVMX(vmxPath, vmxPath, address)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to configure the linked clone %s\n%s",
+				vmName, err.Error())
+		}
+
 		created = append(created, vmName)
 	}
 	return created, nil

@@ -15,6 +15,9 @@ import (
 
 func TestClones(t *testing.T) {
 	Convey("Given a mocked Vmrun Wrapper", t, func() {
+		createTestClonesFolders()
+		defer deleteTestClonesFolders()
+
 		// Prepare mock vmrun
 		vmrun := vmware.NewMockVmrun()
 		vmrun.TemplateVM = "/tmp/vmlcmclones/pom2015-template.vmwarevm/pom2015-template.vmx"
@@ -216,6 +219,16 @@ func TestClones(t *testing.T) {
 func createTestClonesFolders() {
 	os.Mkdir("/tmp/vmlcmclones", 0755)
 	os.Mkdir("/tmp/vmlcmclones/clones", 0755)
+	os.Mkdir("/tmp/vmlcmclones/pom2015-A4B4C4D4E4F4.vmwarevm", 0755)
+	ioutil.WriteFile(
+		"/tmp/vmlcmclones/pom2015-A4B4C4D4E4F4.vmwarevm/pom2015-A4B4C4D4E4F4.vmx",
+		[]byte("testFile"),
+		0755)
+	os.Mkdir("/tmp/vmlcmclones/pom2015-A5B5C5D5E5F5.vmwarevm", 0755)
+	ioutil.WriteFile(
+		"/tmp/vmlcmclones/pom2015-A5B5C5D5E5F5.vmwarevm/pom2015-A5B5C5D5E5F5.vmx",
+		[]byte("testFile"),
+		0755)
 }
 
 func createTestClonesTemplate() {
