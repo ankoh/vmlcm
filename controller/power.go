@@ -32,7 +32,7 @@ func Start(
       return err
     }
     vmName := tryVMNameExtraction(clone.path)
-    util.TryWrite2Columns(buffer, 20, "  Started clone", vmName)
+    util.TryWrite2Columns(buffer, 20, "  Started Clone", vmName)
   }
   util.TryWriteln(buffer, "")
 
@@ -58,12 +58,12 @@ func Stop(
     if !clone.running {
       continue
     }
-    err := vmrun.Stop(clone.path, true)
+    err := vmrun.Stop(clone.path, false)
     if err != nil {
       return err
     }
     vmName := tryVMNameExtraction(clone.path)
-    util.TryWrite2Columns(buffer, 20, "  Stopped clone", vmName)
+    util.TryWrite2Columns(buffer, 20, "  Stopped Clone", vmName)
   }
   util.TryWriteln(buffer, "")
 
