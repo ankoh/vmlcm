@@ -18,6 +18,10 @@ var eth0AddressPattern = regexp.MustCompile(
   "ethernet0.address = \"(([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2}))\"",
 )
 
+var eth0AddressTypePattern = regexp.MustCompile(
+  "ethernet0.addressType = \"[a-zA-Z]+\"",
+)
+
 // UpdateVMX updates a given vmx configuration file
 // It sets the ethernet0.connectionType and the ethernet0.address
 // This approach is faster and much more reliable th
@@ -31,11 +35,14 @@ func UpdateVMX(src string, dst string, address string) error {
 
   eth0ConnectionType := []byte("ethernet0.connectionType = \"bridged\"")
   eth0Address := []byte(fmt.Sprintf("ethernet0.address = \"%s\"", address))
+  eth0AddressType := []byte("ethernet0.addressType = \"static\"")
 
-  // The connectionType should be included already
-  // Just always set the connectionType to bridged
+  // The connectionType and the addressType should be included already
+  // Just always replace both with regex
   fileBytes = eth0ConnectionTypePattern.ReplaceAll(
     fileBytes, eth0ConnectionType)
+  fileBytes = eth0AddressTypePattern.ReplaceAll(
+    fileBytes, eth0AddressType)
 
   // Then check if it has the eth0Address defined
   if !eth0AddressPattern.Match(fileBytes) {

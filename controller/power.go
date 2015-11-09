@@ -58,7 +58,7 @@ func Stop(
     if !clone.running {
       continue
     }
-    err := vmrun.Stop(clone.path, false)
+    err := vmrun.Stop(clone.path, true)
     if err != nil {
       return err
     }
