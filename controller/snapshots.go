@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"bytes"
 
 	"github.com/ankoh/vmlcm/util"
 	"github.com/ankoh/vmlcm/vmware"
@@ -91,4 +92,54 @@ func createTemplateSnapshot(
 		return "", err
 	}
 	return snapshotName, nil
+}
+
+// Snapshot creates a new template snapshot
+func Snapshot(
+	buffer *bytes.Buffer,
+	vmrun vmware.VmrunWrapper,
+	config *util.LCMConfiguration) error {
+	// Fetch all vms that can be discovered easily (clone folder && running)
+	vms, err := getVMs(vmrun, config)
+	if err != nil {
+		return err
+	}
+
+	// Find template
+	var template *virtualMachine
+	for _, vm := range vms {
+		if vm.template {
+			template = vm
+		}
+	}
+
+	// Check if template has been found
+	if template == nil {
+		return fmt.Errorf("Could not find template %s", template)
+	}
+
+	// I wont hard shutdown the template for a snapshot as the template is more
+	// vulnerable to hard shutdowns
+	if template.running {
+		util.TryWriteVerification(buffer, "Template Offline", false)
+
+		var warning bytes.Buffer
+		buffer.WriteString("Aborting: Please shutdown the template first.\n")
+		buffer.WriteString("That needs to be done manually as the template is ")
+		buffer.WriteString("probably linked in the Virtual Machine Library ")
+		buffer.WriteString("and should not be force stopped.\n")
+		return fmt.Errorf(warning.String())
+	}
+	util.TryWriteVerification(buffer, "Template Offline", true)
+
+	// Then create the snapshot
+	snapshotName, err := createTemplateSnapshot(vmrun, config)
+	if err != nil {
+		return fmt.Errorf(
+			"Failed to create a template snapshot.\nError:\n%s", err.Error())
+	}
+	buffer.WriteString("Created Snapshot: ")
+	buffer.WriteString(snapshotName)
+	buffer.WriteString("\n")
+	return nil
 }

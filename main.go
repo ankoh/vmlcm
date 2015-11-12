@@ -100,6 +100,19 @@ func main() {
 			fmt.Println(err.Error())
 			return
 		}
+	case util.SnapshotCommand:
+		if controller.Verify(nil, vmrun, config) != nil {
+			spinner.Stop()
+			fmt.Println("Failed to verify settings. Please run 'verify' to get more details")
+			return
+		}
+		err := controller.Snapshot(buffer, vmrun, config)
+		if err != nil {
+			spinner.Stop()
+			fmt.Print(buffer.String())
+			fmt.Println(err.Error())
+			return
+		}
 	}
 
 	// Stop spinner

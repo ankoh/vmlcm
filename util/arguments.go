@@ -40,6 +40,9 @@ const (
 	// This option shall be used when build agents need to be stopped
 	// in maintenance windows for example
 	StopCommand
+
+	// SnapshotCommand takes a snapshot of the template
+	SnapshotCommand
 )
 
 // LCMArguments stores the options that have been passed to vmlcm
@@ -65,7 +68,7 @@ func ParseArguments() (*LCMArguments, error) {
 
 	// Check if any argument has been provided
 	if len(arguments) == 0 {
-		err := fmt.Errorf("You have to provide one of these arguments: verify, status, start, stop,  use <number>")
+		err := fmt.Errorf("You have to provide one of these arguments: verify, status, start, stop, snapshot, use <number>")
 		return nil, err
 	}
 
@@ -84,6 +87,8 @@ func ParseArguments() (*LCMArguments, error) {
 		command = StartCommand
 	case "stop":
 		command = StopCommand
+	case "snapshot":
+		command = SnapshotCommand
 	default:
 		err := fmt.Errorf("Unknown command %s", commandString)
 		return nil, err
