@@ -124,10 +124,7 @@ func Snapshot(
 		util.TryWriteVerification(buffer, "Template Offline", false)
 
 		var warning bytes.Buffer
-		buffer.WriteString("Aborting: Please shutdown the template first.\n")
-		buffer.WriteString("That needs to be done manually as the template is ")
-		buffer.WriteString("probably linked in the Virtual Machine Library ")
-		buffer.WriteString("and should not be force stopped.\n")
+		buffer.WriteString("\nAborting: Please shutdown the template first.\n")
 		return fmt.Errorf(warning.String())
 	}
 	util.TryWriteVerification(buffer, "Template Offline", true)
@@ -138,8 +135,8 @@ func Snapshot(
 		return fmt.Errorf(
 			"Failed to create a template snapshot.\nError:\n%s", err.Error())
 	}
-	buffer.WriteString("Created Snapshot: ")
-	buffer.WriteString(snapshotName)
+	buffer.WriteString("\n")
+	util.TryWrite2Columns(buffer, 20, "Created Snapshot", snapshotName)
 	buffer.WriteString("\n")
 	return nil
 }
