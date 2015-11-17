@@ -1,6 +1,6 @@
 # vmlcm
 
-The **VMware (Fusion) Linked Clones Manager** is a small command line tool written in Go that speeds up the management of linked clones. It is inspired by tools like docker-compose that allow you to express the "state" of the software through a single configuration file.
+The **VMware (Fusion) Linked Clones Manager** is a small command line tool written in Go that speeds up the management of linked clones. It is inspired by tools like docker-compose that allow you to describe your environment through a single configuration file.
 
 ## Installation
 
