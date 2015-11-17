@@ -17,6 +17,26 @@ export PATH=$PATH:$GOPATH/bin/
 which vmlcm
 ```
 
+## Configuration File
+
+```bash
+{
+  "Vmrun": "/Applications/VMware Fusion.app/Contents/Library/vmrun",
+  "TemplatePath": "/Volumes/__/__/build-agents/buildagent-mac-8.vmwarevm/buildagent-mac-8.vmx",
+  "ClonesDirectory": "/Volumes/__/__/build-agents/",
+  "Prefix": "BuildAgents",
+  "Addresses": [
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__",
+    "08:00:27:__:__:__"
+  ]
+}
+```
+
 ## Commands
 
 ```bash
@@ -46,24 +66,3 @@ vmlcm -f agents.json stop
 vmlcm -f agents.json snapshot
 
 ```
-
-## Configuration File
-
-```bash
-{
-  "Vmrun": "/Applications/VMware Fusion.app/Contents/Library/vmrun",
-  "TemplatePath": "/Volumes/__/__/build-agents/buildagent-mac-8.vmwarevm/buildagent-mac-8.vmx",
-  "ClonesDirectory": "/Volumes/__/__/build-agents/",
-  "Prefix": "BuildAgents",
-  "Addresses": [
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__",
-    "08:00:27:__:__:__"
-  ]
-}
-```
-
