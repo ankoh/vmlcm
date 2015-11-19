@@ -94,6 +94,16 @@ func getVMs(
 		vm.clone = cloneRegEx.MatchString(cloneDirectoryVM)
 		vms[cloneDirectoryVM] = vm
 	}
+	
+	// Finally add the template VM itself if it is stored outside the clones folder
+	if _, ok := vms[templatePath]; !ok {
+		vm := new(virtualMachine)
+		vm.path = templatePath
+		vm.running = false
+		vm.template = true
+		vm.clone = false
+		vms[templatePath] = vm
+	}
 
 	// Store VMs in result Array
 	result := make([]*virtualMachine, 0, len(vms))
