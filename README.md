@@ -66,3 +66,9 @@ vmlcm -f agents.json stop
 vmlcm -f agents.json snapshot
 
 ```
+
+### Screenshots
+
+![Status](/shots/status.png?raw=true "Status")
+![Verify](/shots/verify.png?raw=true "Verify")
+

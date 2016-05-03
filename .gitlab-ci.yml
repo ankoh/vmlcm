@@ -10,4 +10,3 @@ tests:
     - go test -v -cover ./...
   tags:
     - golang
-    - plain
